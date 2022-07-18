@@ -1,0 +1,61 @@
+<!--上方标题与返回箭头与胶囊-->
+<view class="mennuButton">
+<image src="/images/icon_arrow@3x.png" bindtap="back" style="width:36px;height:36px;margin-left:20px;margin-top:24px"></image>
+<text style="color:white;font-size:18px;font-weight:bold;margin-left:96px;margin-top:24px">三足金乌</text>
+</view>
+
+<!--中部文字描述-->
+<view class="mid-word">
+ <!--添加设备（搜索前）-->
+ <block wx:if="{{ifSearching==0}}">
+   <view class="motto1" style="margin-left:45px;margin-top:26px">第一步</view>
+   <view class="motto2" style="margin-left:45px;margin-top:5.74px">长按服饰上的按钮2s，进入配对状态</view>
+   <view class="motto1" style="margin-left:45px;margin-top:35px">第二步</view>
+   <view class="motto2" style="margin-left:45px;margin-top:5.74px">请将服饰贴近手机</view>
+ </block>
+ <!--搜索设备-->
+<block wx:if="{{ifSearching==1}}">
+   <view class="motto1" style="margin-left:105px;margin-top:78px">正在搜索可用设备</view>
+   <view class="motto2" style="margin-left:140px;margin-top:7px">请将服饰贴近手机</view>
+ </block>
+ <!--未发现设备-->
+ <block wx:if="{{ifSearching==-1&&hasFound==0}}">
+   <view class="motto1" style="margin-left:135px;margin-top:70px;">未发现设备</view>
+   <view class="motto2" style="margin-left:55px;margin-top:8px">1.请确认设备处于待配对状态(长按服饰上的按钮2s)</view>
+   <view class="motto2" style="margin-left:55px;margin-top:3px">2.请将服饰贴近手机</view>
+ </block>
+ <!--配对成功-->
+ <block wx:if="{{ifSearching==-1&&hasFound==1}}">
+  <view class="motto1" style="margin-left:145px;margin-top:78px">配对成功</view>
+  <view class="motto2" style="margin-left:138px;margin-top:7px">已连接Teminal Pro</view>
+  <!--<view wx:for="{{devices}}">
+    <view style="font-size: 16px; color: #333;">{{item.name}}</view>
+    <view style="font-size: 10px">设备{{item.deviceId}}</view>
+  </view>-->
+ </block>
+</view>
+
+<!--中部大图-->
+<image wx:if="{{ifSearching==0}}" class="mid-image" src="/images/pair_img_1@3x.png"></image>
+<image wx:if="{{ifSearching==1}}" class="mid-image" src="/images/pair_img_2@3x.png"></image>
+<image wx:if="{{ifSearching==-1&&hasFound==0}}" class="mid-image" src="/images/pair_img_3@3x.png"></image>
+<image wx:if="{{ifSearching==-1&&hasFound==1}}" class="mid-image" src="/images/pair_img_4@3x.png"></image>
+
+<!--底部按钮-->
+ <!--添加设备（搜索前）-->
+<block wx:if="{{ifSearching==0}}">
+   <view style="margin-left:140px;margin-top:14.4px" class="motto3">我已完成上述操作</view>
+   <view class="btn" bindtap="tap">开始搜索</view>
+</block>
+<!--搜索设备-->
+<block wx:if="{{ifSearching==1}}">
+   <view class="btn" style="background-color:#2E3546" bindtap="tap">取消搜索</view>
+</block>
+<!--未发现设备-->
+<block wx:if="{{ifSearching==-1&&hasFound==0}}">
+  <view class="btn" bindtap="tap">重新搜索</view>
+</block>
+<!--配对成功-->
+<block wx:if="{{ifSearching==-1&&hasFound==1}}">
+  <view class="btn" bindtap="tap">重新搜索</view>
+</block>

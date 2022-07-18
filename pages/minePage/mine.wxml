@@ -1,0 +1,53 @@
+<view class="container"> <!-- animation="{{slide_up1}}" style="opacity:0;" -->
+  <!-- 顶部： 图片 名称 等信息-->
+  <view class="top">
+    <image src="{{user.avatarUrl}}" class="topImage"></image>
+    <view class="topName">
+      <text>{{user.nickName}}</text>
+      <text style="font-size:20rpx;margin-top:20rpx;color:#AAB5CA">拥有{{machine.length}}个产品</text>
+    </view>
+    <view class="change" bindtap="toDetail">
+      <text style="color:#AAB5CA">编辑资料</text>
+      <image class="changImage" src="/images/icon_arrow copy 3@3x.png"></image>
+    </view>
+  </view>
+  <!-- 主体 -->
+  <view class="main">
+    <!-- 我的设备 和 添加设备 -->
+    <view class="mainTop">
+      <text>我的设备</text>
+      <text style="position:absolute;right:0;color:#0074FF;font-size:30rpx" bindtap="addMachine">添加设备</text>
+    </view>
+    <!-- 如果没有设备 -->
+    <view class="mainImage" wx:if="{{!isHave}}">
+      <image src="/images/undraw_winter_magic_5xu2@3x.png" style="width:161px;height: 136px;"></image>
+      <text>暂无设备</text>
+    </view>
+    <!-- 有设备 -->
+    <scroll-view class="isHave" scroll-y>
+      <block wx:for="{{machine}}" wx:for-index="idx" wx:for-item="item">
+        <view class="machine">
+          <image src="/images/icon_clothes@3x.png" style="width:70px;height:70px;margin-left:20px"></image>
+          <view class="machine-name">
+            <text>{{item.name}}</text>
+            <text style="position:absolute;bottom:0;font-size:25rpx;color:#626C7F">{{item.condition}}</text>
+            <text style="position:absolute;bottom:0;font-size:25rpx;color:#C8CDD5;right:40px" bindtap="rename" id="{{item.name}}">重命名</text>
+            <text style="position:absolute;bottom:0;font-size:25rpx;color:#C8CDD5;right:0" bindtap="toUnbind" id="{{idx}}">解绑</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+</view>
+
+<!--生成解绑提示弹窗-->
+<view class="zan-dialog {{ showDialog ? 'zan-dialog--show' : '' }}">
+  <view class="zan-dialog__mask" bindtap="toggleDialog" />
+  <view class="zan-dialog__container">
+    <view style="color:white;font-weight:heavy;font-size:16px;margin-left:26px;margin-top:25px">确定解绑该设备？</view>
+    <view style="display:flex">
+      <button class="btn" style="width:104.5px;height:44px;background-color:#626C7F;margin-left:17px" bindtap="toggleDialog">取消</button>
+      <button class="btn" style="width:104.5px;height:44px;background-color:#007AFF;padding-left:16px" bindtap="unbind">确定</button>
+    </view>
+  </view>
+</view>

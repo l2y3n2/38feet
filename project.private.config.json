@@ -1,0 +1,84 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/homePage/home",
+          "pathName": "pages/homePage/home",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/login/login",
+          "pathName": "pages/login/login",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "template/template",
+          "pathName": "template/template",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "shiyan/shiyan",
+          "pathName": "shiyan/shiyan",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/equipmentPage/equipment",
+          "pathName": "pages/equipmentPage/equipment",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/homePage/measure/measure",
+          "pathName": "pages/homePage/measure/measure",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/minePage/mine",
+          "pathName": "pages/minePage/mine",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/minePage/mineDetail/mineDetail",
+          "pathName": "pages/minePage/mineDetail/mineDetail",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/minePage/addMachine/addMachine",
+          "pathName": "pages/minePage/addMachine/addMachine",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/homePage/home",
+          "pathName": "pages/homePage/home",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/minePage/mineDetail/mineDetail",
+          "pathName": "pages/minePage/mineDetail/mineDetail",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

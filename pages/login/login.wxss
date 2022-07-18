@@ -1,0 +1,30 @@
+/* 设置page样式 */
+page{
+  background-color: #111622;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+/* 容器样式 */
+.container{
+  display: flex;
+  flex-direction: column;
+}
+
+/* 欢迎标语样式 */
+.text{
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 50rpx;
+  opacity:0;
+}
+
+/* 登录按钮样式 */
+.loginButton{
+  width: 400rpx;
+  border-radius: 40rpx;
+}

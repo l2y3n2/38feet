@@ -1,0 +1,88 @@
+<view class="container">
+  <!-- animation="{{slide_up1}}" style="opacity:0;" -->
+  <!-- 主体部分 -->
+  <view>
+    <view class="menuButtonLeftView" style="top:{{menuButton.top}}px;left:6%;width:94%;height:{{menuButton.height+9}}px">三足金乌</view>
+    <!-- 未配对的状态 -->
+    <view class="mainNotMacth" wx:if="{{!isMacth}}">
+      <view class="mainNotMacthText1" bindtap="addMachine">添加设备</view>
+      <view class="mainNotMacthText2">体验科技带来的温暖</view>
+      <button class="mainNotMacthButton" bindtap="Match">添加</button>
+    </view>
+
+    <!-- 已配对的状态 -->
+    <scroll-view class="mainMacth" style="height:{{screen.height-menuButton.height*2-menuButton.top*2-60}}px;" wx:if="{{isMacth}}" scroll-y>
+      <!-- 设备名称 -->
+      <view class="mainMacthTitle">
+        <view class="mainMacthTitleLeft">
+          <text>Terminal Pro</text>
+          <view class="mainMacthTitleLeftCondition">
+            <text wx:if="{{!condition}}" bindtap="changeCondition">未连接</text>
+            <text wx:if="{{condition}}" bindtap="changeCondition">已连接</text>
+          </view>
+        </view>
+        <view class="mainMacthTitleMiddle">
+          <image src="/images/unfold_product.png" class="mainMacthTitleMiddleImage"></image>
+        </view>
+        <view class="mainMacthTitleRight" bindtap="addMachine">
+          <text>添加设备</text>
+        </view>
+      </view>
+
+      <!-- 设备属性 -->
+      <view class="mainMacthAttribute">
+        <view class="mainMacthAttributeTop">
+          <block wx:for="{{Attribute}}" wx:for-index="idx" wx:for-item="item">
+            <view class="mainMacthAttributeTopItem">
+              <text wx:if="{{!condition}}">-</text>
+              <text wx:if="{{condition}}">{{item.attribute}}</text>
+              <text style="color:#6D778B;">{{item.text}}</text>
+            </view>
+          </block>
+        </view>
+        <view class="mainMacthAttributeTottom" style="height: {{isConnected?'307px':'413px'}};">
+          <view class="mainMacthAttributeTottomTop">
+            <text>智能控温</text>
+            <view class="mainMacthAttributeTottomTopSwitch">
+              <switch checked="{{true}}" color="#0074FF" class="wx-switch-input" bindchange="isOpen"></switch>
+            </view>
+          </view>
+          <view class="gearSelection">
+            <block wx:for="{{gearInformation}}" wx:key="item" data-index="index" >
+              <view class="gearSelectionStyle" data-index="{{index}}" bindtap="chooseGear">
+                <image src="{{(!isOpen && whichGear == index)?item.connected:item.disconnected}}" class="gearImage"></image>
+                <text class="gearText">{{item.text}}</text>
+              </view>
+            </block>
+            <view class="gearSelectionStyle">
+                <image src="{{isOpen ? '/images/icon_ai_open.png' : '/images/icon_ai_close.png'}}" class="gearImage"></image>
+                <text class="gearText">智能控制</text>
+              </view>
+          </view>
+          <view class="constantSelection" wx:if="{{isConnected}}">
+            <text>恒定温度</text>
+            <view class="progressBar">
+            <text class="progressBarNumber">50</text>
+            <view class="progressBarButton"></view>
+            </view>
+          </view>
+          <image src="/images/image_body_circulation@2x.png" class="bodyCirculation" wx:if="{{!isConnected}}"></image>
+        </view>
+      </view>
+      
+      <view class="healthText">
+        <text>健康数据</text>
+      </view>
+
+      <!-- 健康数据 -->
+      <import src="../../template/template.wxml"></import>
+      <template data="{{yue}}" bindtap="change" is="first"></template>
+      <template data="{{yue1,condition}}" bindtap="change1" is="second" bindtap="to"></template>
+      <template data="{{yue2,condition}}" bindtap="change2" is="third" bindtap="to"></template>
+
+    </scroll-view>
+  </view>
+
+  <!-- 底部蓝线 -->
+  <view class="bottomLineHome"></view>
+</view>

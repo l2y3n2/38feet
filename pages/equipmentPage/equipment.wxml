@@ -1,0 +1,37 @@
+<view class="container"> <!-- animation="{{slide_up1}}" style="opacity:0;" -->
+  <view class="menuButtonLeftView" style="top:{{menuButton.top}}px;left:6%;width:94%;height:{{menuButton.height+9}}px">
+    数据统计</view>
+    <!-- 如果与设备失去联系 -->
+    <view class="containerImage" wx:if="{{!isCondition}}">
+      <image src="/images/undraw_winter_magic_5xu2@3x.png" style="height:90%;width:100%"></image>
+      <text>与设备失去了联络</text>
+    </view>
+    <!-- 如果没有配备太阳能电池 -->
+    <view class="containerImage" wx:if="{{!isHave}}">
+      <image src="/images/undraw_winter_magic_5xu2@3x.png" style="height:90%;width:100%"></image>
+      <text>当前设备无太阳能电池</text>
+    </view>
+    <!-- 主体部分 -->
+    <view class="main" style="top:{{menuButton.top+70}}px;">
+      <view class="mainTop">
+        <text>今日电池已使用</text>
+        <text style="color:#ffffff;">3小时55分钟</text>
+      </view>
+      <view class="mainTop" style="align-items: center;">
+        <text>剩余电量</text>
+        <text style="color:#ffffff;">36%</text>
+      </view>
+      <view class="mainTop">
+        <text>剩余续航时间</text>
+        <text style="color:#ffffff;">1小时23分钟</text>
+      </view>
+    </view>
+    <!-- 模板 -->
+    <scroll-view class="template" style="height:{{screen.height-menuButton.height*2-menuButton.top*2-100}}px;" scroll-y>
+      <import src="../../template/template.wxml"></import>
+      <template is="fourth" ></template>
+      <template is="fivth" data="{{yue2}}" bindtap="change2"></template>
+    </scroll-view>
+    <!-- 底部蓝线 -->
+   <view class="bottomLineHome"></view>
+</view>

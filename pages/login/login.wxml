@@ -1,0 +1,14 @@
+<view class="container" style="height:{{screen.height}}px;width:{{screen.width}}px;" wx:if="{{isHide}}">
+
+  <!-- 欢迎标语 -->
+  <view class="text" animation="{{slide_up1}}">
+    <text>欢迎使用</text>
+    <text style="margin-top:5rpx;">三足金乌智能管家</text>
+  </view>
+
+  <!-- 登录button -->
+  <button class="loginButton" bindtap="login"  animation="{{slide_up2}}">授权登录</button>
+
+</view>
+
+

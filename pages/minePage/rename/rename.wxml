@@ -1,0 +1,10 @@
+<!--pages/minePage/rename/rename.wxml-->
+<!--上方标题与返回箭头与胶囊-->
+<view class="mennuButton">
+<image src="/images/icon_arrow@3x.png" bindtap="back" style="width:36px;height:36px;margin-left:20px;margin-top:24px"></image>
+<text style="color:white;font-size:18px;font-weight:bold;margin-left:96px;margin-top:24px">三足金乌</text>
+</view>
+<!--输入框-->
+<input class="input" value="{{oldName}}" bindinput="getNewName"/>
+<!--保存键-->
+<view class="btn" bindtap="new">保存</view>

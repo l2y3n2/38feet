@@ -1,0 +1,561 @@
+<!--template/template.wxml-->
+<template name="first">
+  <view
+    style="width:100%;height: 700rpx;background-color: #1A202E;margin-top: 40rpx;margin-bottom:20px;position:relative">
+    <image src="/images/icon_step_sum@3x.png" style="width:40px;height:40px;top:10%;left:10%;position:absolute;">
+    </image>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:11%;left:26%">今日步数</text>
+    <text style="position:absolute;font-size:26rpx;color:#6D778B;top:18%;left:26%">6/23 12:57</text>
+    <text style="position:absolute;font-size:36rpx;color:#ffffff;top:15%;right:10%">8512</text>
+    <view wx:if="{{yue}}"
+      style="display:flex;flex-direction:row;height:50%;width:80%;left:10%;position:absolute;top:28%">
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/17</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/18</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/19</text>
+        <view style="width:26%;height:60%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/20</text>
+        <view style="width:26%;height:22%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/21</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/22</text>
+        <view style="width:26%;height:38%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/23</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+    </view>
+    <view wx:if="{{!yue}}"
+      style="display:flex;flex-direction:row;height:50%;width:80%;left:10%;position:absolute;top:28%">
+
+    </view>
+    <view
+      style="bottom:5%;height:10%;width:80%;border-radius:50rpx;background-color:#2E3546;position:absolute;left:10%;display:flex;flex-direction:row;color:#ffffff">
+      <view wx:if="{{yue}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content: center;align-items: center;"
+        bindtap="change">日</view>
+      <view wx:if="{{!yue}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content:center;align-items: center;background-color:#007AFF;">
+        日</view>
+      <view wx:if="{{yue}}"
+        style="width:50%;background-color:#007AFF;border-radius:50rpx;display:flex;justify-content: center;align-items: center;">
+        月</view>
+      <view wx:if="{{!yue}}"
+        style="width:50%;border-radius:50rpx;display:flex;justify-content: center;align-items: center;"
+        bindtap="change">月</view>
+    </view>
+  </view>
+</template>
+
+
+<template name="second">
+  <view
+    style="width:100%;height: 700rpx;background-color: #1A202E;margin-top: 40rpx;margin-bottom:20px;position:relative">
+    <image src="/images/Icon_heart_rate@3x.png" style="width:40px;height:40px;top:10%;left:10%;position:absolute;">
+    </image>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:11%;left:26%">心率</text>
+    <text style="position:absolute;font-size:26rpx;color:#6D778B;top:18%;left:26%">6/23 12:57</text>
+    <text style="position:absolute;font-size:36rpx;color:#ffffff;top:15%;right:10%">86</text>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:30%;left:10%">平均心率</text>
+    <view wx:if="{{!yue1}}"
+      style="display:flex;flex-direction:row;height:30%;width:80%;left:10%;position:absolute;top:37%">
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/17</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/18</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/19</text>
+        <view style="width:26%;height:60%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/20</text>
+        <view style="width:26%;height:22%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/21</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/22</text>
+        <view style="width:26%;height:38%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/23</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+    </view>
+    <view wx:if="{{yue1}}"
+      style="display:flex;flex-direction:row;height:30%;width:80%;left:10%;position:absolute;top:37%">
+      <view style="width:10%;height:100%;display:flex;flex-direction:column;">
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          100</view>
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          50</view>
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          0</view>
+      </view>
+      <view style="width:85%;height:100%;display:flex;flex-direction:column;margin-left:5%;">
+        <view style="height:90%;width:50%;display:flex;flex-direction:row;">
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:85%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:80%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:75%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:70%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:65%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:55%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+        </view>
+        <view style="height:10%;width:100%;display:flex;flex-direction:row;">
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">0:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">4:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">8:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">12:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">16:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">20:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">24:00</view>
+        </view>
+      </view>
+    </view>
+    <view
+      style="bottom:18%;height:10%;width:80%;border-radius:50rpx;background-color:#2E3546;position:absolute;left:10%;display:flex;flex-direction:row;color:#ffffff">
+      <view wx:if="{{!yue1}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content: center;align-items: center;"
+        bindtap="change1">日</view>
+      <view wx:if="{{yue1}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content:center;align-items: center;background-color:#007AFF;">
+        日</view>
+      <view wx:if="{{!yue1}}"
+        style="width:50%;background-color:#007AFF;border-radius:50rpx;display:flex;justify-content: center;align-items: center;">
+        月</view>
+      <view wx:if="{{yue1}}" style="width:50%;border-radius:50rpx;display:flex;justify-content: center;align-items: center;"bindtap="change1">月</view>
+    </view>
+    <view
+      style="bottom:3%;height:10%;width:80%;border-radius:50rpx;background-color:#6D778B;position:absolute;left:10%;display:flex;flex-direction:row;justify-content:center;align-items:center;color:#ffffff" wx:if="{{!condition}}">
+      测量
+    </view>
+    <view
+      style="bottom:3%;height:10%;width:80%;border-radius:50rpx;background: linear-gradient(to right, #0078FF, #7E00FF);position:absolute;left:10%;display:flex;flex-direction:row;justify-content:center;align-items:center;color:#ffffff" wx:if="{{condition}}" bindtap="to">
+      测量
+    </view>
+  </view>
+</template>
+
+<template name="third">
+  <view
+    style="width:100%;height: 700rpx;background-color: #1A202E;margin-top: 40rpx;margin-bottom:20px;position:relative">
+    <image src="/images/Icon_body_temperature@3x.png" style="width:40px;height:40px;top:10%;left:10%;position:absolute;">
+    </image>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:11%;left:26%">体温</text>
+    <text style="position:absolute;font-size:26rpx;color:#6D778B;top:18%;left:26%">6/23 12:57</text>
+    <text style="position:absolute;font-size:36rpx;color:#ffffff;top:15%;right:10%">36.2</text>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:30%;left:10%">最近一小时平均体温：36.3</text>
+    <view wx:if="{{!yue2}}"
+      style="display:flex;flex-direction:row;height:30%;width:80%;left:10%;position:absolute;top:37%">
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/17</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/18</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/19</text>
+        <view style="width:26%;height:60%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/20</text>
+        <view style="width:26%;height:22%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/21</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/22</text>
+        <view style="width:26%;height:38%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/23</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+    </view>
+    <view wx:if="{{yue2}}"
+      style="display:flex;flex-direction:row;height:30%;width:80%;left:10%;position:absolute;top:37%">
+      <view style="width:10%;height:100%;display:flex;flex-direction:column;">
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          100</view>
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          50</view>
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          0</view>
+      </view>
+      <view style="width:85%;height:100%;display:flex;flex-direction:column;margin-left:5%;">
+        <view style="height:90%;width:50%;display:flex;flex-direction:row;">
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:85%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:80%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:75%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:70%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:65%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:55%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+        </view>
+        <view style="height:10%;width:100%;display:flex;flex-direction:row;">
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">0:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">4:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">8:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">12:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">16:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">20:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">24:00</view>
+        </view>
+      </view>
+    </view>
+    <view
+      style="bottom:18%;height:10%;width:80%;border-radius:50rpx;background-color:#2E3546;position:absolute;left:10%;display:flex;flex-direction:row;color:#ffffff">
+      <view wx:if="{{!yue2}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content: center;align-items: center;"
+        bindtap="change2">日</view>
+      <view wx:if="{{yue2}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content:center;align-items: center;background-color:#007AFF;">
+        日</view>
+      <view wx:if="{{!yue2}}"
+        style="width:50%;background-color:#007AFF;border-radius:50rpx;display:flex;justify-content: center;align-items: center;">
+        月</view>
+      <view wx:if="{{yue2}}" style="width:50%;border-radius:50rpx;display:flex;justify-content: center;align-items: center;"bindtap="change2">月</view>
+    </view>
+    <view
+      style="bottom:3%;height:10%;width:80%;border-radius:50rpx;background-color:#6D778B;position:absolute;left:10%;display:flex;flex-direction:row;justify-content:center;align-items:center;color:#ffffff" wx:if="{{!condition}}">
+      测量
+    </view>
+    <view
+      style="bottom:3%;height:10%;width:80%;border-radius:50rpx;background: linear-gradient(to right, #0078FF, #7E00FF);position:absolute;left:10%;display:flex;flex-direction:row;justify-content:center;align-items:center;color:#ffffff" wx:if="{{condition}}" bindtap="to">
+      测量
+    </view>
+  </view>
+</template>
+
+<template name="fourth">
+  <view
+    style="width:100%;height: 700rpx;background-color: #1A202E;margin-top: 40rpx;margin-bottom:20px;position:relative">
+    <image src="/images/Icon_power@3x.png" style="width:40px;height:40px;top:10%;left:10%;position:absolute;">
+    </image>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:11%;left:26%">当前功率</text>
+    <text style="position:absolute;font-size:26rpx;color:#6D778B;top:18%;left:26%">6/23 12:57</text>
+    <text style="position:absolute;font-size:36rpx;color:#ffffff;top:15%;right:10%">30W</text>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:30%;left:10%">今日电池功率使用情况</text>
+    <view wx:if="{{false}}"
+      style="display:flex;flex-direction:row;height:30%;width:80%;left:10%;position:absolute;top:37%">
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/17</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/18</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/19</text>
+        <view style="width:26%;height:60%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/20</text>
+        <view style="width:26%;height:22%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/21</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/22</text>
+        <view style="width:26%;height:38%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">6/23</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+    </view>
+    <view wx:if="{{true}}"
+      style="display:flex;flex-direction:row;height:40%;width:80%;left:10%;position:absolute;top:45%">
+      <view style="width:10%;height:100%;display:flex;flex-direction:column;">
+        <view
+          style="width:100%;height:20%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          40</view>
+        <view
+          style="width:100%;height:20%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          30</view>
+        <view
+          style="width:100%;height:20%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          20</view>
+          <view
+          style="width:100%;height:20%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          10</view>
+          <view
+          style="width:100%;height:20%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          0</view>
+      </view>
+      <view style="width:85%;height:100%;display:flex;flex-direction:column;margin-left:5%;">
+        <view style="height:90%;width:50%;display:flex;flex-direction:row;">
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:85%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:80%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:75%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:70%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:65%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:55%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+        </view>
+        <view style="height:10%;width:100%;display:flex;flex-direction:row;">
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">0:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">4:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">8:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">12:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">16:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">20:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">24:00</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="fivth">
+  <view
+    style="width:100%;height: 700rpx;background-color: #1A202E;margin-top: 40rpx;margin-bottom:20px;position:relative">
+    <image src="/images/Icon_power@3x.png" style="width:40px;height:40px;top:10%;left:10%;position:absolute;">
+    </image>
+    <text style="position:absolute;font-size:30rpx;color:#ffffff;top:11%;left:26%">电量消耗</text>
+    <text style="position:absolute;font-size:26rpx;color:#6D778B;top:18%;left:26%">单位：mAh</text>
+    <view wx:if="{{!yue2}}"
+      style="display:flex;flex-direction:row;height:30%;width:80%;left:10%;position:absolute;top:37%">
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">周一</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">周二</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">周三</text>
+        <view style="width:26%;height:60%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">周四</text>
+        <view style="width:26%;height:22%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">周五</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">周六</text>
+        <view style="width:26%;height:38%;background-color:#007AFF;"></view>
+      </view>
+      <view style="display:flex;flex-direction:column-reverse;width:14.3%;height:100%;align-items: center;">
+        <text style="color:#ffffff;font-size:20rpx;margin-top:20rpx">周天</text>
+        <view style="width:26%;height:30%;background-color:#007AFF;"></view>
+      </view>
+    </view>
+    <view wx:if="{{yue2}}"
+      style="display:flex;flex-direction:row;height:30%;width:80%;left:10%;position:absolute;top:37%">
+      <view style="width:10%;height:100%;display:flex;flex-direction:column;">
+        <view
+          style="width:100%;height:40%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          4</view>
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          2</view>
+        <view
+          style="width:100%;height:33.3%;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#ffffff;font-size:20rpx">
+          0</view>
+      </view>
+      <view style="width:85%;height:100%;display:flex;flex-direction:column;margin-left:5%;">
+        <view style="height:90%;width:50%;display:flex;flex-direction:row;">
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:85%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:80%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:75%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:70%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:65%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:60%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:55%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+          <view style="height:100%;width:9.2%;display:flex;flex-direction:row;position:relative;">
+            <view style="height:100%;width:33%;background-color:#252D41;position:absolute;left:0"></view>
+            <view style="height:50%;width:33%;background-color:#0078FF;position:absolute;left:0;bottom:0"></view>
+          </view>
+        </view>
+        <view style="height:10%;width:100%;display:flex;flex-direction:row;">
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">0:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">4:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">8:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">12:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">16:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">20:00</view>
+          <view style="display:flex;flex-direction:row;width:14.2%;font-size:20rpx;color:#ffffff;margin-top:20rpx">24:00</view>
+        </view>
+      </view>
+    </view>
+    <view
+      style="bottom:10%;height:10%;width:80%;border-radius:50rpx;background-color:#2E3546;position:absolute;left:10%;display:flex;flex-direction:row;color:#ffffff">
+      <view wx:if="{{!yue2}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content: center;align-items: center;"
+        bindtap="change2">日</view>
+      <view wx:if="{{yue2}}"
+        style="width:50%;border-radius:50rpx;display:flex;flex-direction:row;justify-content:center;align-items: center;background-color:#007AFF;">
+        日</view>
+      <view wx:if="{{!yue2}}"
+        style="width:50%;background-color:#007AFF;border-radius:50rpx;display:flex;justify-content: center;align-items: center;">
+        月</view>
+      <view wx:if="{{yue2}}" style="width:50%;border-radius:50rpx;display:flex;justify-content: center;align-items: center;"bindtap="change2">月</view>
+    </view>
+  </view>
+</template>
