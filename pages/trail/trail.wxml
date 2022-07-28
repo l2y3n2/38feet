@@ -1,0 +1,18 @@
+<!--pages/trail/trail.wxml-->
+<view class="page-body">
+  <view class="page-section page-section-gap">
+    <map
+      id="myMap"
+      class="map"
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      polyline="{{polyline}}"
+      show-location
+    />
+  </view>
+  <view class="btn-area">
+    <button bindtap="startTrail" disabled="{{disableStartButton}}" class="page-body-button" type="primary">开始追踪</button>
+    <button bindtap="stopTrail" disabled="{{disableStopButton}}" class="page-body-button" type="primary">结束追踪</button>
+    <text>获取坐标{{counter}}次</text>
+  </view>
+</view>

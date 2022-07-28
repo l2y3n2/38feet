@@ -7,8 +7,15 @@
     "pages/homePage/measure/measure",
     "pages/minePage/mineDetail/mineDetail",
     "pages/minePage/rename/rename",
-    "pages/minePage/addMachine/addMachine"
+    "pages/minePage/addMachine/addMachine",
+    "pages/trail/trail"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "requiredBackgroundModes": ["location"],
   "tabBar": {
     "backgroundColor": "#111622",
     "borderStyle": "black",
@@ -25,6 +32,11 @@
       },
       {
         "pagePath": "pages/minePage/mine",
+        "iconPath": "/images/icon3.png",
+        "selectedIconPath": "/images/icon4.png"
+      },
+      {
+        "pagePath": "pages/trail/trail",
         "iconPath": "/images/icon3.png",
         "selectedIconPath": "/images/icon4.png"
       }
