@@ -1,73 +1,9 @@
 {
-  "setting": {
-    "compileHotReLoad": true
-  },
-  "condition": {
-    "miniprogram": {
-      "list": [
-        {
-          "name": "pages/homePage/home",
-          "pathName": "pages/homePage/home",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/login/login",
-          "pathName": "pages/login/login",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "template/template",
-          "pathName": "template/template",
-          "query": "",
-          "scene": null
-        }
-        {
-          "name": "pages/equipmentPage/equipment",
-          "pathName": "pages/equipmentPage/equipment",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/homePage/measure/measure",
-          "pathName": "pages/homePage/measure/measure",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/minePage/mine",
-          "pathName": "pages/minePage/mine",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/minePage/mineDetail/mineDetail",
-          "pathName": "pages/minePage/mineDetail/mineDetail",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/minePage/addMachine/addMachine",
-          "pathName": "pages/minePage/addMachine/addMachine",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/homePage/home",
-          "pathName": "pages/homePage/home",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/minePage/mineDetail/mineDetail",
-          "pathName": "pages/minePage/mineDetail/mineDetail",
-          "query": "",
-          "scene": null
-        }
-      ]
-    }
-  },
   "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
-  "projectname": "38feet"
+  "projectname": "38足金乌",
+  "setting": {
+    "useIsolateContext": true,
+    "urlCheck": false
+  },
+  "libVersion": "2.25.1"
 }

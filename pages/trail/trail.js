@@ -1,4 +1,6 @@
 // pages/trail/trail.js
+const utils = require("../../tools/distance.js") //引入登录函数
+
 Page({
   /**
    * 页面的初始数据
@@ -9,6 +11,10 @@ Page({
     disableStartButton: false,
     disableStopButton: true,
     counter: 0,
+    totalDistance: 0,
+    totalTime: 0,
+    maxSpeed: 0,
+    avgSpeed: 0,
     polyline: [{
       points: [],
       color: '#000000',
@@ -17,60 +23,91 @@ Page({
     }]
   },
 
-  addPoint: function(res, relocate) {
+  addPoint: function(res) {
+    var now = new Date();
+
     this.data.polyline[0].points.push(res);
-    if (this.data.polyline[0].points.length > 1) {
+    console.log('this.data: ', this.data)
+    if (this.data.counter > 0) {
+      var distance = utils.getDistance(this.data.polyline[0].points[this.data.counter - 1], res);
+      var totalDistance = this.data.totalDistance + distance;
+      var speed = distance / (now - this.data.prevTime) * 1000;
+
+      if (this.data.maxSpeed < speed) {
+        this.data.maxSpeed = speed;
+      }
+
       this.setData({'polyline[0].points': this.data.polyline[0].points});
-    }
-    this.setData({counter: this.data.polyline[0].points.length});
-    console.log('polyline', this.data.polyline[0])
-    if (relocate) {
       this.setData({
-        longitude : res.longitude,
-        latitude : res.latitude,
+        totalTime: Math.round((now - this.data.startTime) / 1000),
+        totalDistance: Math.round(totalDistance),
+        avgSpeed: Math.round(totalDistance / (now - this.data.startTime) * 1000),
+        maxSpeed: Math.round(this.data.maxSpeed)
       });
     }
+
+    this.data.prevTime = now;
+    this.setData({
+      counter: this.data.polyline[0].points.length,
+      longitude: res.longitude,
+      latitude: res.latitude
+    });
   },
 
   trailUpdate: function(res) {
-    console.log('update location', res);
-    this.addPoint(res, true);
+    this.addPoint(res);
   },
 
   startTrail: function() {
+    this.setData({
+      avgSpeed: 0,
+      maxSpeed: 0,
+      totalDistance: 0,
+      totalTime: 0,
+      counter: 0
+    });
+    this.setData({'polyline[0].points': []});
     wx.getLocation({
       type: 'gcj02',
       success : (res) => {
-        console.log('start location', res);
-        this.addPoint(res, true);
+        this.addPoint(res);
       }
     });
-    wx.startLocationUpdateBackground({
-    // 执行失败，需要微信申请后台权限？
+    wx.startLocationUpdate({
+    // 执行失败Auth Failed，需要微信申请后台权限？
     // wx.startLocationUpdateBackground({
       type: 'gcj02',
       success : () => {
-        this.setData({disableStartButton: true});
-        this.setData({disableStopButton: false});
+        this.setData({
+          disableStartButton: true,
+          disableStopButton: false,
+          startTime: new Date(),
+          prevTime: new Date()
+        });
         wx.onLocationChange(this.trailUpdate);
       },
-      fail:
+      fail: (msg) => {
+        console.log('后台监听失败：', msg);
+      }
     });
   },
 
   stopTrail: function() {
     wx.offLocationChange(this.trailUpdate);
-    this.setData({'polyline[0].points': []});
-    this.setData({disableStartButton: false});
-    this.setData({disableStopButton: true});
+    this.setData({
+      disableStartButton: false,
+      disableStopButton: true
+    });
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.setData({disableStartButton: false});
-    this.setData({disableStopButton: true});
+    this.setData({
+      disableStartButton: false,
+      disableStopButton: true
+    });
   },
 
   /**
@@ -120,43 +157,5 @@ Page({
    */
   onShareAppMessage() {
 
-  },
-
-  getCenterLocation: function () {
-    this.mapCtx.getCenterLocation({
-      success: function(res){
-        console.log(res.longitude)
-        console.log(res.latitude)
-      }
-    })
-  },
-  moveToLocation: function () {
-    this.mapCtx.moveToLocation()
-  },
-  translateMarker: function() {
-    this.mapCtx.translateMarker({
-      markerId: 1,
-      autoRotate: true,
-      duration: 1000,
-      destination: {
-        latitude:23.10229,
-        longitude:113.3345211,
-      },
-      animationEnd() {
-        console.log('animation end')
-      }
-    })
-  },
-  includePoints: function() {
-    this.mapCtx.includePoints({
-      padding: [10],
-      points: [{
-        latitude:23.10229,
-        longitude:113.3345211,
-      }, {
-        latitude:23.00229,
-        longitude:113.3345211,
-      }]
-    })
   }
 })
