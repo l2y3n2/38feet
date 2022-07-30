@@ -1,5 +1,5 @@
 // pages/trail/trail.js
-const utils = require("../../tools/distance.js") //引入登录函数
+const utils = require("../../tools/trail.js") //引入登录函数
 
 Page({
   /**
@@ -22,21 +22,25 @@ Page({
       dottedLine: false
     }]
   },
+  // GPS误差过滤，最小米数
+  minDistance: 10,
 
   addPoint: function(res) {
     var now = new Date();
 
-    this.data.polyline[0].points.push(res);
-    console.log('this.data: ', this.data)
     if (this.data.counter > 0) {
       var distance = utils.getDistance(this.data.polyline[0].points[this.data.counter - 1], res);
       var totalDistance = this.data.totalDistance + distance;
       var speed = distance / (now - this.data.prevTime) * 1000;
 
+      // 过滤抖动
+      if (distance < this.minDistance) {
+        return;
+      }      
       if (this.data.maxSpeed < speed) {
         this.data.maxSpeed = speed;
       }
-
+      this.data.polyline[0].points.push(res);
       this.setData({'polyline[0].points': this.data.polyline[0].points});
       this.setData({
         totalTime: Math.round((now - this.data.startTime) / 1000),
@@ -44,6 +48,9 @@ Page({
         avgSpeed: Math.round(totalDistance / (now - this.data.startTime) * 1000),
         maxSpeed: Math.round(this.data.maxSpeed)
       });
+    }
+    else {
+      this.data.polyline[0].points.push(res);
     }
 
     this.data.prevTime = now;
@@ -67,12 +74,6 @@ Page({
       counter: 0
     });
     this.setData({'polyline[0].points': []});
-    wx.getLocation({
-      type: 'gcj02',
-      success : (res) => {
-        this.addPoint(res);
-      }
-    });
     wx.startLocationUpdateBackground({
       type: 'gcj02',
       success : () => {
@@ -86,29 +87,7 @@ Page({
       },
       fail: (msg) => {
         //授权失败后引导用户打开定位信息
-        wx.getSetting({
-          success: function (res) {
-            var statu = res.authSetting;
-            console.log(statu)
-            if (!statu["scope.userLocationBackground"]) {
-              wx.showModal({
-                title: "是否授权后台使用地理位置",
-                content: "需要获取您的地理位置，请确认授权，否则地图功能将无法使用",
-                success: function (tip) {
-                  if (tip.confirm) {
-                    wx.openSetting({
-                      success: function (data) {
-                        if (data.authSetting["scope.userLocationBackground"] === true) {}
-                      }
-                    });
-                  } else {
-                    console.log('用户拒绝打开设置界面')
-                  }
-                }
-              });
-            }
-          }
-        });
+        utils.getUserAuth();
       }
     });
   },

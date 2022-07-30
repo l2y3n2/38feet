@@ -14,7 +14,7 @@
     <button bindtap="startTrail" disabled="{{disableStartButton}}" class="page-body-button" type="primary">开始追踪</button>
     <button bindtap="stopTrail" disabled="{{disableStopButton}}" class="page-body-button" type="primary">结束追踪</button>
     <button class="page-body-button" type="warn">获取坐标{{counter}}次</button>
-    <button class="page-body-button" type="warn">总用时{{totalTime}}秒，总里程{{totalDistance}}</button>
+    <button class="page-body-button" type="warn">总用时{{totalTime}}秒，总里程{{totalDistance}}米</button>
     <button class="page-body-button" type="warn">平均速度{{avgSpeed}}m/s，最大速度{{maxSpeed}}m/s</button>
   </view>
 </view>
