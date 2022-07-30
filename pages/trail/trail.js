@@ -73,9 +73,7 @@ Page({
         this.addPoint(res);
       }
     });
-    wx.startLocationUpdate({
-    // 执行失败Auth Failed，需要微信申请后台权限？
-    // wx.startLocationUpdateBackground({
+    wx.startLocationUpdateBackground({
       type: 'gcj02',
       success : () => {
         this.setData({
@@ -87,7 +85,30 @@ Page({
         wx.onLocationChange(this.trailUpdate);
       },
       fail: (msg) => {
-        console.log('后台监听失败：', msg);
+        //授权失败后引导用户打开定位信息
+        wx.getSetting({
+          success: function (res) {
+            var statu = res.authSetting;
+            console.log(statu)
+            if (!statu["scope.userLocationBackground"]) {
+              wx.showModal({
+                title: "是否授权后台使用地理位置",
+                content: "需要获取您的地理位置，请确认授权，否则地图功能将无法使用",
+                success: function (tip) {
+                  if (tip.confirm) {
+                    wx.openSetting({
+                      success: function (data) {
+                        if (data.authSetting["scope.userLocationBackground"] === true) {}
+                      }
+                    });
+                  } else {
+                    console.log('用户拒绝打开设置界面')
+                  }
+                }
+              });
+            }
+          }
+        });
       }
     });
   },
