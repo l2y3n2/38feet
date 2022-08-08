@@ -29,7 +29,7 @@ Page({
     chs: [],
     ifSearching: 0, //0为搜索前，1为搜索中，-1为搜索完毕
     hasFound: 0, //0为未发现设备，1为发现设备（配对成功）
-    targetName: "Terminal Pro" //目标设备的name，搜索周围蓝牙设备，通过name比对判定是否搜索到目标设备
+    targetName: "37WARM" // 目标设备的name，名字不对请改这里
   },
 
   onLoad: function (options) {

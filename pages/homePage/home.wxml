@@ -2,7 +2,7 @@
   <!-- animation="{{slide_up1}}" style="opacity:0;" -->
   <!-- 主体部分 -->
   <view>
-    <view class="menuButtonLeftView" style="top:{{menuButton.top}}px;left:6%;width:94%;height:{{menuButton.height+9}}px">三足金乌</view>
+    <view class="menuButtonLeftView" style="top:{{menuButton.top}}px;left:6%;width:94%;height:{{menuButton.height+9}}px">37℃ Warm</view>
     <!-- 未配对的状态 -->
     <view class="mainNotMacth" wx:if="{{!isMacth}}">
       <view class="mainNotMacthText1" bindtap="addMachine">添加设备</view>

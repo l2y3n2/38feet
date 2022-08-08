@@ -1,7 +1,7 @@
 <view class="container"> <!-- animation="{{slide_up1}}" style="opacity:0;" -->
   <view class="menuButtonLeftView" style="top:{{menuButton.top}}px;left:6%;width:94%;height:{{menuButton.height}}px">
     <image src="/images/icon_arrow@3x.png" style="width:35px;height:35px" bindtap="back"></image>
-    <text style="margin-left:25%">三足金乌</text>
+    <text style="margin-left:25%">37℃ Warm</text>
   </view>
   <view class="mian">
     <image src="/images/icon_heart@3x.png" style="width:80px;height:80px"></image>

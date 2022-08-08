@@ -3,7 +3,7 @@
   <!-- 欢迎标语 -->
   <view class="text" animation="{{slide_up1}}">
     <text>欢迎使用</text>
-    <text style="margin-top:5rpx;">三足金乌智能管家</text>
+    <text style="margin-top:5rpx;">37℃ Warm智能管家</text>
   </view>
 
   <!-- 登录button -->
