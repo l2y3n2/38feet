@@ -1,5 +1,6 @@
 // pages/trail/trail.js
 const utils = require("../../tools/trail.js") //引入登录函数
+const scale = wx.getSystemInfoSync().windowWidth / 750
 
 Page({
   /**
@@ -20,7 +21,9 @@ Page({
       color: '#000000',
       width: 4,
       dottedLine: false
-    }]
+    }],
+    shareUrl: "",
+    url:""
   },
   // GPS误差过滤，最小米数
   minDistance: 10,
@@ -100,6 +103,23 @@ Page({
     });
   },
 
+  onShareAppMessage: function () {
+    return {
+      title: '邀请您使用37°Warm小程序',
+      path: '/pages/login/login', // 当对方点击你分享的小程序时到达的页面
+      //imageUrl: '/images/logo.png'  //转发时显示此图片，若没有此参数，默认是传送当前页面截图
+    };
+  },
+  onShareTimeline() {
+    this.Creatshareimg();
+    return {
+      title: '邀请您使用37°Warm小程序',
+      path: '/pages/login/login', // 当对方点击你分享的小程序时到达的页面
+      imageUrl: this.data.url  //转发时显示此图片，若没有此参数，默认是传送当前页面截图
+    };
+  },
+
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -108,7 +128,99 @@ Page({
       disableStartButton: false,
       disableStopButton: true
     });
+    wx.showShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline'],// 需要显示的转发按钮名称列表.合法值包含 "shareAppMessage"、"shareTimeline"
+      success(res) {
+        console.log(res);
+      },
+      fail(e) {
+        console.log(e);
+      }
+    });
   },
+
+Creatshareimg: function () {  
+  // 通过 SelectorQuery 获取 Canvas 节点,创建画布
+  wx.createSelectorQuery()
+    .select('#canvas')
+    .fields({
+      node: true,
+      size: true,
+    })
+    .exec(this.init.bind(this))
+    
+},
+
+init(res) {
+  const width = res[0].width
+  const height = res[0].height
+  const canvas = res[0].node
+  const ctx = canvas.getContext('2d')
+  const dpr = wx.getSystemInfoSync().pixelRatio  
+  canvas.width = width * dpr
+  canvas.height = height * dpr
+  ctx.scale(dpr, dpr)
+  console.log( canvas.width,canvas.height, dpr,width,height,scale ,ctx.width, ctx.height); 
+  //const img = canvas.createImage() 
+  //this._img = img
+  //img.src = './share.png'
+  const a = this.data.totalDistance+"km";
+  const b = this.data.avgSpeed+"km/h";
+  const c = this.data.maxSpeed+"km/s";
+  this.render(canvas, ctx,a,b,c);
+  
+},
+
+render(canvas, ctx,a,b,c) {
+  //this.drawshareimg(ctx)
+  const imgObj = canvas.createImage()
+  imgObj.src = "/images/share.png";
+  imgObj.onload = function(){
+  ctx.drawImage(this, 0, 0, 750*scale,900*scale);
+  ctx.font = "27px serif";
+  
+  console.log(a,b,c)
+  ctx.strokeText(a, 500*scale, 335*scale);
+  ctx.strokeText(b, 500*scale, 412.5*scale);
+  ctx.strokeText(b, 500*scale, 490*scale);
+}; 
+  let _this = this 
+  wx.canvasToTempFilePath({
+    canvas: canvas,
+    success(res) {
+      console.log('res-->', res);
+      _this.setData({
+        url: res.tempFilePath,
+      })
+    },
+    fail(err) {
+      console.log('err-->', err);
+    },
+  })
+},
+// 按钮触发分享功能  
+  SharetoFriend: function () { 
+    this.Creatshareimg();
+    wx.showToast({
+      title: '图片生成中...',
+      icon: "none",
+      duration: 1000
+    })
+    setTimeout(() => {
+      console.log(this.data.url);
+      wx.showShareImageMenu({
+        //path: '/images/logo.png',
+        path: this.data.url,
+      })
+    },1000)
+  
+    
+    
+  },
+ 
+  
+  
+  
 
   /**
    * 生命周期函数--监听页面初次渲染完成

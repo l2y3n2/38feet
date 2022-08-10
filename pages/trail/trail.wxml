@@ -11,10 +11,17 @@
     />
   </view>
   <view class="btn-area">
-    <button bindtap="startTrail" disabled="{{disableStartButton}}" class="page-body-button" type="primary">开始追踪</button>
-    <button bindtap="stopTrail" disabled="{{disableStopButton}}" class="page-body-button" type="primary">结束追踪</button>
+    <button bindtap="startTrail" disabled="{{disableStartButton}}" class="page-body-button" type="primary" style="position: relative; left: 0rpx; top: -35rpx">开始追踪</button>
+    <button bindtap="stopTrail" disabled="{{disableStopButton}}" class="page-body-button" type="primary" style="position: relative; left: 0rpx; top: -20rpx">结束追踪</button>
     <button class="page-body-button" type="warn">获取坐标{{counter}}次</button>
-    <button class="page-body-button" type="warn">总用时{{totalTime}}秒，总里程{{totalDistance}}米</button>
-    <button class="page-body-button" type="warn">平均速度{{avgSpeed}}m/s，最大速度{{maxSpeed}}m/s</button>
+    <button class="page-body-button" type="warn" style="position: relative; left: 0rpx; top: 12rpx">总用时{{totalTime}}秒，总里程{{totalDistance}}米</button>
+    <button class="page-body-button" type="warn" style="position: relative; left: 0rpx; top: 33rpx">平均速度{{avgSpeed}}m/s，最大速度{{maxSpeed}}m/s</button>
+    <button bindtap="SharetoFriend" class="page-body-button" type="warn" style="position: relative; left: 0rpx; top: 41rpx">分享给朋友</button>
   </view>
-</view>
+  <view  style="width:0px;height:0px; overflow:hidden"> //让父标签 0宽 0高 隐藏溢出
+    <canvas
+      type="2d"
+      id="canvas"
+      style="width: 750rpx; height: 900rpx;"
+    ></canvas>
+  </view></view>
