@@ -47,7 +47,43 @@ function getDistance(p1, p2) {
   return s
 }
 
+function addPoint(page, res) {
+  var now = new Date();
+
+  if (page.data.counter > 0) {
+    var distance = getDistance(page.data.polyline[0].points[page.data.counter - 1], res);
+    var totalDistance = page.data.totalDistance + distance;
+    var speed = distance / (now - page.data.prevTime) * 1000;
+
+    // 过滤抖动
+    if (distance < page.data.minDistance) {
+      return;
+    }      
+    if (page.data.maxSpeed < speed) {
+      page.data.maxSpeed = speed;
+    }
+    page.data.polyline[0].points.push(res);
+    page.setData({'polyline[0].points': page.data.polyline[0].points});
+    page.setData({
+      totalTime: Math.round((now - page.data.startTime) / 1000),
+      totalDistance: Math.round(totalDistance),
+      avgSpeed: Math.round(totalDistance / (now - page.data.startTime) * 1000),
+      maxSpeed: Math.round(page.data.maxSpeed)
+    });
+  }
+  else {
+    page.data.polyline[0].points.push(res);
+  }
+
+  page.data.prevTime = now;
+  page.setData({
+    counter: page.data.polyline[0].points.length,
+    longitude: res.longitude,
+    latitude: res.latitude
+  });
+}
+
 module.exports = {
-  getDistance,
+  addPoint,
   getUserAuth,
 }

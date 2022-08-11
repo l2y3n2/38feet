@@ -1,5 +1,5 @@
 // pages/trail/trail.js
-const utils = require("../../tools/trail.js") //引入登录函数
+const utils = require("./trailUtil.js") //引入登录函数
 const scale = wx.getSystemInfoSync().windowWidth / 750
 
 Page({
@@ -16,6 +16,7 @@ Page({
     totalTime: 0,
     maxSpeed: 0,
     avgSpeed: 0,
+    minDistance: 50,
     polyline: [{
       points: [],
       color: '#000000',
@@ -25,47 +26,13 @@ Page({
     shareUrl: "",
     url:""
   },
-  // GPS误差过滤，最小米数
-  minDistance: 10,
-
-  addPoint: function(res) {
-    var now = new Date();
-
-    if (this.data.counter > 0) {
-      var distance = utils.getDistance(this.data.polyline[0].points[this.data.counter - 1], res);
-      var totalDistance = this.data.totalDistance + distance;
-      var speed = distance / (now - this.data.prevTime) * 1000;
-
-      // 过滤抖动
-      if (distance < this.minDistance) {
-        return;
-      }      
-      if (this.data.maxSpeed < speed) {
-        this.data.maxSpeed = speed;
-      }
-      this.data.polyline[0].points.push(res);
-      this.setData({'polyline[0].points': this.data.polyline[0].points});
-      this.setData({
-        totalTime: Math.round((now - this.data.startTime) / 1000),
-        totalDistance: Math.round(totalDistance),
-        avgSpeed: Math.round(totalDistance / (now - this.data.startTime) * 1000),
-        maxSpeed: Math.round(this.data.maxSpeed)
-      });
-    }
-    else {
-      this.data.polyline[0].points.push(res);
-    }
-
-    this.data.prevTime = now;
-    this.setData({
-      counter: this.data.polyline[0].points.length,
-      longitude: res.longitude,
-      latitude: res.latitude
-    });
-  },
 
   trailUpdate: function(res) {
-    this.addPoint(res);
+    utils.addPoint(this, res);
+  },
+
+  changeMinDistance: function (e) {
+    this.setData({minDistance: e.detail.value});
   },
 
   startTrail: function() {
