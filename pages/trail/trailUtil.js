@@ -1,8 +1,50 @@
+const startMarkerIcon = '../../images/icon1.png';
+const endMarkerIcon = '../../images/icon1.png';
+const maxMarkerIcon = '../../images/icon1.png';
+const iconSize = 24;
+// 不同速度路径颜色，单位米/秒
+const speedColorList = [
+  {
+    min: 0,
+    max: 1,
+    color: '#ffd500'
+  },
+  {
+    min: 1,
+    max: 2,
+    color: '#ff8800'
+  },
+  {
+    min: 2,
+    max: 3,
+    color: '#ff5d00'
+  },
+  {
+    min: 3,
+    max: 5,
+    color: '#ff4d00'
+  },
+  {
+    min: 5,
+    max: 10,
+    color: '#ff3d00'
+  },
+  {
+    min: 10,
+    max: 20,
+    color: '#ff2d00'
+  },
+  {
+    min: 20,
+    max: 7900,
+    color: '#ff1d00'
+  },
+]
+
 function getUserAuth() {
   wx.getSetting({
     success: function (res) {
       var statu = res.authSetting;
-      console.log(statu)
       if (!statu["scope.userLocationBackground"]) {
         wx.showModal({
           title: "是否授权后台使用地理位置",
@@ -24,46 +66,113 @@ function getUserAuth() {
   });
 }
 
-function Rad(d) { //根据经纬度判断距离
-  return d * Math.PI / 180.0;
-}
-
 function getDistance(p1, p2) {
-  // lat1用户的纬度
-  // lng1用户的经度
-  // lat2商家的纬度
-  // lng2商家的经度
-  var lat1 = p1.latitude;
-  var lng1 = p1.longitude;
-  var lat2 = p2.latitude;
-  var lng2 = p2.longitude;
-  var radLat1 = Rad(lat1);
-  var radLat2 = Rad(lat2);
-  var a = radLat1 - radLat2;
-  var b = Rad(lng1) - Rad(lng2);
-  var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-  s = s * 6378.137;
-  s = Math.round(s * 10000) / 10;
+  let radLat1 = p1.latitude * Math.PI / 180.0;
+  let radLat2 = p2.latitude * Math.PI / 180.0;
+  let a = radLat1 - radLat2;
+  let b = p1.longitude * Math.PI / 180.0 - p2.longitude * Math.PI / 180.0;
+  let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+  s = Math.round(s * 6378137);
+
   return s
 }
 
-function addPoint(page, res) {
-  var now = new Date();
+function setSpeedRank(point) {
+  for (let i = 0; i < speedColorList.length - 1; i++) {
+    if (point.speed >= speedColorList[i].min && point.speed < speedColorList[i].max) {
+      point.rank = i;
+      return;
+    }
+  }
+  point.rank = speedColorList.length - 1;
+}
+
+function addPolyline(page, point) {
+  let line = page.data.polyline[page.data.polyline.length - 1];
+  let prev = line.points[line.points.length - 1];
+
+  setSpeedRank(point);
+  if (prev.rank && prev.rank != point.rank) {
+    line = {
+      points: [prev, point],
+      color: speedColorList[point.rank].color,
+      width: 8,
+      arrowLine: true
+    };
+    page.data.polyline.push(line);
+    page.setData({polyline: page.data.polyline});
+  }
+  else { 
+    line.color = speedColorList[point.rank].color;
+    line.points.push(point);
+    page.setData({polyline: page.data.polyline});
+  }
+}
+
+function changeBoundary(page, point) {
+  let changed = false;
+
+  console.log(page.data.minPoint, page.data.maxPoint, point);
+  if (page.data.minPoint.latitude > point.latitude) {
+    page.data.minPoint.latitude = point.latitude;
+    changed = true;
+  }
+  if (page.data.minPoint.longitude > point.longitude) {
+    page.data.minPoint.longitude = point.longitude;
+    changed = true;
+  }
+  if (page.data.maxPoint.latitude < point.latitude) {
+    page.data.maxPoint.latitude = point.latitude;
+    changed = true;
+  }
+  if (page.data.maxPoint.longitude < point.longitude) {
+    page.data.maxPoint.longitude = point.longitude;
+    changed = true;
+  }
+  if (changed) {
+    let distance = getDistance(page.data.minPoint, page.data.maxPoint);
+    if (distance < 1000) {
+      page.setData({scale: 15});
+    }
+    else if (distance < 5000) {
+      page.setData({scale: 13});
+    }
+    else if (distance < 10000) {
+      page.setData({scale: 12});
+    }
+    else if (distance < 20000) {
+      page.setData({scale: 11});
+    }
+    else if (distance < 50000) {
+      page.setData({scale: 10});
+    }
+    else if (distance < 200000) {
+      page.setData({scale: 8});
+    }
+    else {
+      page.setData({scale: 5});
+    }
+  }
+}
+
+function addPoint(page, point) {
+  let now = new Date();
 
   if (page.data.counter > 0) {
-    var distance = getDistance(page.data.polyline[0].points[page.data.counter - 1], res);
-    var totalDistance = page.data.totalDistance + distance;
-    var speed = distance / (now - page.data.prevTime) * 1000;
-
+    let distance = getDistance(page.data.polyline[0].points[page.data.counter - 1], point);
+    let totalDistance = page.data.totalDistance + distance;
+    
     // 过滤抖动
     if (distance < page.data.minDistance) {
       return;
-    }      
-    if (page.data.maxSpeed < speed) {
-      page.data.maxSpeed = speed;
     }
-    page.data.polyline[0].points.push(res);
-    page.setData({'polyline[0].points': page.data.polyline[0].points});
+    
+    point.speed = Math.round(distance / (now - page.data.prevTime) * 1000 * 100) / 100;
+    if (page.data.maxSpeed < point.speed) {
+      page.data.maxSpeed = point.speed;
+    }
+    addPolyline(page, point);
+    changeBoundary(page, point);
     page.setData({
       totalTime: Math.round((now - page.data.startTime) / 1000),
       totalDistance: Math.round(totalDistance),
@@ -72,14 +181,35 @@ function addPoint(page, res) {
     });
   }
   else {
-    page.data.polyline[0].points.push(res);
+    page.data.minPoint = {
+      latitude: point.latitude,
+      longitude: point.longitude
+    };
+    page.data.maxPoint = {
+      latitude: point.latitude,
+      longitude: point.longitude
+    };
+    page.data.polyline.push({
+      points: [point],
+      color: speedColorList[0].color,
+      width: 8,
+      arrowLine: true
+    });
+    point.id = 1;
+    point.width = iconSize;
+    point.height = iconSize;
+    point.iconPath = startMarkerIcon;
+    page.data.markers.push(point);
+    page.setData({
+      markers: page.data.markers
+    });
   }
 
   page.data.prevTime = now;
   page.setData({
     counter: page.data.polyline[0].points.length,
-    longitude: res.longitude,
-    latitude: res.latitude
+    longitude: point.longitude,
+    latitude: point.latitude
   });
 }
 

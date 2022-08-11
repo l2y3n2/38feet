@@ -9,6 +9,7 @@ Page({
   data: {
     latitude: 23.099994,
     longitude: 113.324520,
+    scale: 15,
     disableStartButton: false,
     disableStopButton: true,
     counter: 0,
@@ -16,15 +17,11 @@ Page({
     totalTime: 0,
     maxSpeed: 0,
     avgSpeed: 0,
-    minDistance: 50,
-    polyline: [{
-      points: [],
-      color: '#000000',
-      width: 4,
-      dottedLine: false
-    }],
+    polyline: [],
+    markers: [],
     shareUrl: "",
-    url:""
+    url:"",
+    minDistance: 50,
   },
 
   trailUpdate: function(res) {
@@ -37,13 +34,14 @@ Page({
 
   startTrail: function() {
     this.setData({
+      polyline: [],
+      markers: [],
       avgSpeed: 0,
       maxSpeed: 0,
       totalDistance: 0,
       totalTime: 0,
       counter: 0
     });
-    this.setData({'polyline[0].points': []});
     wx.startLocationUpdateBackground({
       type: 'gcj02',
       success : () => {
@@ -85,7 +83,6 @@ Page({
       imageUrl: this.data.url  //转发时显示此图片，若没有此参数，默认是传送当前页面截图
     };
   },
-
 
   /**
    * 生命周期函数--监听页面加载

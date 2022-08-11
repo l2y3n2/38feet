@@ -7,13 +7,15 @@
       latitude="{{latitude}}"
       longitude="{{longitude}}"
       polyline="{{polyline}}"
+      scale="{{scale}}"
+      markers="{{markers}}"
       show-location
     />
   </view>
   <view class="page-section page-section-gap">
     <view class="flex-row" style="display:flex;">
       <text class="flex-item">GPS抖动过滤距离（米）：</text>
-      <input class="flex-item" bindinput="changeMinDistance" disabled="{{disableStartButton}}" placeholder="50"/>
+      <input class="flex-item" bindinput="changeMinDistance" disabled="{{disableStartButton}}" placeholder="{{minDistance}}"/>
     </view>
   </view>
   <view class="page-section page-section-gap">
