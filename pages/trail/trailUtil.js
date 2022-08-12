@@ -198,7 +198,8 @@ function addPoint(page, point) {
       totalTime: Math.round((now - page.data.startTime) / 1000),
       totalDistance: Math.round(totalDistance),
       avgSpeed: Math.round(totalDistance / (now - page.data.startTime) * 1000),
-      maxSpeed: Math.round(page.data.maxSpeed)
+      maxSpeed: Math.round(page.data.maxSpeed),
+      counter: page.data.counter + 1
     });
   }
   else {
