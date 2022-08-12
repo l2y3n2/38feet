@@ -24,7 +24,7 @@
     <button class="page-body-button" type="warn">获取坐标{{counter}}次</button>
     <button class="page-body-button" type="warn">总用时{{totalTime}}秒，总里程{{totalDistance}}米</button>
     <button class="page-body-button" type="warn">平均速度{{avgSpeed}}m/s，最大速度{{maxSpeed}}m/s</button>
-    <button bindtap="SharetoFriend" class="page-body-button" type="warn">分享给朋友</button>
+    <button bindtap="SharetoFriend" disabled="{{disableStartButton}}" class="page-body-button" type="warn">分享给朋友</button>
   </view>
   <view style="width:0px;height:0px; overflow:hidden"> //让父标签 0宽 0高 隐藏溢出
     <canvas type="2d" id="canvas" style="width: 750rpx; height: 900rpx;"></canvas>

@@ -1,6 +1,6 @@
 // pages/trail/trail.js
-const utils = require("./trailUtil.js") //引入登录函数
-const scale = wx.getSystemInfoSync().windowWidth / 750
+const utils = require("./trailUtil.js");
+const scale = wx.getSystemInfoSync().windowWidth / 750;
 
 Page({
   /**
@@ -54,7 +54,7 @@ Page({
         wx.onLocationChange(this.trailUpdate);
       },
       fail: (msg) => {
-        //授权失败后引导用户打开定位信息
+        // 授权失败后引导用户打开定位信息
         utils.getUserAuth();
       }
     });
@@ -62,6 +62,7 @@ Page({
 
   stopTrail: function() {
     wx.offLocationChange(this.trailUpdate);
+    utils.setEndPoint(this);
     this.setData({
       disableStartButton: false,
       disableStopButton: true

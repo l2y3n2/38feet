@@ -1,6 +1,6 @@
-const startMarkerIcon = '../../images/icon1.png';
-const endMarkerIcon = '../../images/icon1.png';
-const maxMarkerIcon = '../../images/icon1.png';
+const startMarkerIcon = '../../images/icon5.png';
+const endMarkerIcon = '../../images/icon2.png';
+const maxMarkerIcon = '../../images/icon3.png';
 const iconSize = 24;
 // 不同速度路径颜色，单位米/秒
 const speedColorList = [
@@ -112,7 +112,6 @@ function addPolyline(page, point) {
 function changeBoundary(page, point) {
   let changed = false;
 
-  console.log(page.data.minPoint, page.data.maxPoint, point);
   if (page.data.minPoint.latitude > point.latitude) {
     page.data.minPoint.latitude = point.latitude;
     changed = true;
@@ -155,6 +154,28 @@ function changeBoundary(page, point) {
   }
 }
 
+function updateMaxSpeed(page, point) {
+  page.data.maxSpeed = point.speed;
+  point.id = 2;
+  point.width = iconSize;
+  point.height = iconSize;
+  point.iconPath = maxMarkerIcon;
+  point.callout = {
+    color: '#5d5d5d',
+    fontSize: 14,
+    borderRadius: 6,
+    padding: 8,
+    bgColor: '#fff',
+    display: 'ALWAYS',
+    content: '最大速度' + point.speed + ' m/s'
+  }
+  if (page.data.markers.length > 1) {
+    page.data.markers.pop();
+  }
+  page.data.markers.push(point);
+  page.setData({markers: page.data.markers});
+}
+
 function addPoint(page, point) {
   let now = new Date();
 
@@ -169,7 +190,7 @@ function addPoint(page, point) {
     
     point.speed = Math.round(distance / (now - page.data.prevTime) * 1000 * 100) / 100;
     if (page.data.maxSpeed < point.speed) {
-      page.data.maxSpeed = point.speed;
+      updateMaxSpeed(page, point);
     }
     addPolyline(page, point);
     changeBoundary(page, point);
@@ -213,7 +234,25 @@ function addPoint(page, point) {
   });
 }
 
+function setEndPoint(page) {
+  let line = page.data.polyline[page.data.polyline.length - 1];
+  let last = line.points[line.points.length - 1];
+
+  last.id = 3;
+  last.width = iconSize;
+  last.height = iconSize;
+  last.iconPath = endMarkerIcon;
+  page.data.markers.push(last);
+  page.setData({
+    latitude: (page.data.minPoint.latitude + page.data.maxPoint.latitude) / 2,
+    longitude: (page.data.minPoint.longitude + page.data.maxPoint.longitude) / 2,
+    markers: page.data.markers
+  });
+  console.log(page.data)
+}
+
 module.exports = {
   addPoint,
+  setEndPoint,
   getUserAuth,
 }
