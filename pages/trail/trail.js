@@ -17,6 +17,7 @@ Page({
     totalTime: 0,
     maxSpeed: 0,
     avgSpeed: 0,
+    prevPoint: null,
     polyline: [],
     markers: [],
     shareUrl: "",
@@ -40,7 +41,8 @@ Page({
       maxSpeed: 0,
       totalDistance: 0,
       totalTime: 0,
-      counter: 0
+      counter: 0,
+      prevPoint: null
     });
     wx.startLocationUpdateBackground({
       type: 'gcj02',
