@@ -8,15 +8,23 @@
     "pages/minePage/mineDetail/mineDetail",
     "pages/minePage/rename/rename",
     "pages/minePage/addMachine/addMachine",
-    "pages/trail/trail"
+    "pages/trail/trail",
+    "pages/ble/ble"
   ],
   "permission": {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
     }
   },
-  "requiredPrivateInfos": ["getLocation", "onLocationChange", "startLocationUpdate", "startLocationUpdateBackground"],
-  "requiredBackgroundModes": ["location"],
+  "requiredPrivateInfos": [
+    "getLocation",
+    "onLocationChange",
+    "startLocationUpdate",
+    "startLocationUpdateBackground"
+  ],
+  "requiredBackgroundModes": [
+    "location"
+  ],
   "tabBar": {
     "backgroundColor": "#111622",
     "borderStyle": "black",
@@ -38,8 +46,13 @@
       },
       {
         "pagePath": "pages/trail/trail",
-        "iconPath": "/images/icon3.png",
-        "selectedIconPath": "/images/icon4.png"
+        "iconPath": "/images/icon5.png",
+        "selectedIconPath": "/images/icon1.png"
+      },
+      {
+        "pagePath": "pages/ble/ble",
+        "iconPath": "/images/icon2.png",
+        "selectedIconPath": "/images/icon6.png"
       }
     ]
   },
