@@ -89,7 +89,7 @@ function setSpeedRank(point) {
 
 function addPolyline(page, point) {
   let line = page.data.polyline[page.data.polyline.length - 1];
-  let prev = line.points[line.points.length - 1];
+  let prev = page.data.prevPoint;
 
   setSpeedRank(point);
   if (prev.rank && prev.rank != point.rank) {
@@ -130,7 +130,10 @@ function changeBoundary(page, point) {
   }
   if (changed) {
     let distance = getDistance(page.data.minPoint, page.data.maxPoint);
-    if (distance < 1000) {
+    if (distance < 100) {
+      page.setData({scale: 18});
+    }
+    else if (distance < 1000) {
       page.setData({scale: 15});
     }
     else if (distance < 5000) {
@@ -179,8 +182,8 @@ function updateMaxSpeed(page, point) {
 function addPoint(page, point) {
   let now = new Date();
 
-  if (page.data.counter > 0) {
-    let distance = getDistance(page.data.polyline[0].points[page.data.counter - 1], point);
+  if (page.data.prevPoint != null) {
+    let distance = getDistance(page.data.prevPoint, point);
     let totalDistance = page.data.totalDistance + distance;
     
     // 过滤抖动
@@ -198,8 +201,7 @@ function addPoint(page, point) {
       totalTime: Math.round((now - page.data.startTime) / 1000),
       totalDistance: Math.round(totalDistance),
       avgSpeed: Math.round(totalDistance / (now - page.data.startTime) * 1000),
-      maxSpeed: Math.round(page.data.maxSpeed),
-      counter: page.data.counter + 1
+      maxSpeed: Math.round(page.data.maxSpeed)
     });
   }
   else {
@@ -221,6 +223,15 @@ function addPoint(page, point) {
     point.width = iconSize;
     point.height = iconSize;
     point.iconPath = startMarkerIcon;
+    point.callout = {
+      color: '#5d5d5d',
+      fontSize: 14,
+      borderRadius: 6,
+      padding: 8,
+      bgColor: '#fff',
+      display: 'ALWAYS',
+      content: '起点'
+    };
     page.data.markers.push(point);
     page.setData({
       markers: page.data.markers
@@ -228,28 +239,36 @@ function addPoint(page, point) {
   }
 
   page.data.prevTime = now;
+  page.data.prevPoint = point;
   page.setData({
-    counter: page.data.polyline[0].points.length,
     longitude: point.longitude,
-    latitude: point.latitude
+    latitude: point.latitude,
+    counter: page.data.counter + 1
   });
 }
 
 function setEndPoint(page) {
-  let line = page.data.polyline[page.data.polyline.length - 1];
-  let last = line.points[line.points.length - 1];
+  let last = page.data.prevPoint;
 
   last.id = 3;
   last.width = iconSize;
   last.height = iconSize;
   last.iconPath = endMarkerIcon;
+  last.callout = {
+    color: '#5d5d5d',
+    fontSize: 14,
+    borderRadius: 6,
+    padding: 8,
+    bgColor: '#fff',
+    display: 'ALWAYS',
+    content: '终点'
+  };
   page.data.markers.push(last);
   page.setData({
     latitude: (page.data.minPoint.latitude + page.data.maxPoint.latitude) / 2,
     longitude: (page.data.minPoint.longitude + page.data.maxPoint.longitude) / 2,
     markers: page.data.markers
   });
-  console.log(page.data)
 }
 
 module.exports = {
