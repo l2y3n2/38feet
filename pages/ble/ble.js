@@ -109,6 +109,27 @@ Page({
     }); 
   },
 
+  onBLECharacteristicRead: function(characteristic) {
+    this.setData({message: '读取到蓝牙数据:' + JSON.stringify(characteristic)});
+    wx.offBLECharacteristicValueChange(onBLECharacteristicRead);
+  },
+
+  testReadBLE: function()
+  {
+    wx.onBLECharacteristicValueChange(this.onBLECharacteristicRead);
+    wx.readBLECharacteristicValue({
+      deviceId: this.data.deviceId,
+      serviceId: this.data.serviceId,
+      characteristicId: null,
+      success: (res) => {
+        this.setData({message: "蓝牙读取成功"});
+      },
+      fail: (res) => {
+        this.setData({message: "蓝牙读取失败，失败原因： " + JSON.stringify(res)});
+      },
+    }); 
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */

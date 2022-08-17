@@ -5,6 +5,7 @@
     <button bindtap="findDevice" class="flex-item page-body-button" type="primary">查找设备（多找几次）</button>
     <button bindtap="connectDevice" class="flex-item page-body-button" type="primary">连接设备（代码里指定ID）</button>
     <button bindtap="testWriteBLE" class="flex-item page-body-button" type="primary">写值测试（代码指定ID与值）</button>
+    <button bindtap="testReadBLE" class="flex-item page-body-button" type="primary">读值测试（代码指定ID）</button>
     <button bindtap="disconnectDevice" class="flex-item page-body-button" type="primary">断开设备</button>
     <text class="flex-item">{{message}}</text>
   </view>
