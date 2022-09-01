@@ -1,4 +1,25 @@
 // pages/ble/ble.js
+function inArray(arr, key, val) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][key] === val) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+// ArrayBuffer转16进度字符串示例
+function ab2hex(buffer) {
+  var hexArr = Array.prototype.map.call(
+    new Uint8Array(buffer),
+    function (bit) {
+      return ('00' + bit.toString(16)).slice(-2)
+    }
+  )
+  return hexArr.join('');
+}
+
+
 Page({
 
   /**
@@ -7,8 +28,9 @@ Page({
   data: {
     message: 'BLE测试',
     // **********这里指定ID************
-    deviceId: null,
-    serviceId: null,
+    deviceId: 'CF05C15E-2CB9-B19B-6BE2-34EBF1D5B554',
+    serviceId: '0000FFE0-0000-1000-8000-00805F9B34FB',
+    myvalue: new ArrayBuffer(4),
   },
 
   openBLE: function() {
@@ -53,7 +75,7 @@ Page({
           deviceId: deviceId,
           success: (res) => {
             this.setData({message: this.data.message + '获取蓝牙设备Service信息 = ' + JSON.stringify(res)});
-            wx.stopBluetoothDevicesDiscovery();              
+            //wx.stopBluetoothDevicesDiscovery();              
             wx.getBLEDeviceCharacteristics({
               deviceId: deviceId,
               serviceId: serviceUUID,
@@ -95,11 +117,15 @@ Page({
 
   testWriteBLE: function()
   {
+    let buffer = new ArrayBuffer(2);
+    let dataView = new DataView(buffer);
+    dataView.setUint8(0,48);
+    dataView.setUint8(1,49);
     wx.writeBLECharacteristicValue({
       deviceId: this.data.deviceId,
       serviceId: this.data.serviceId,
-      characteristicId: null,
-      value: null,
+      characteristicId: '0000FFE1-0000-1000-8000-00805F9B34FB',
+      value: buffer,
       success: (res) => {
         this.setData({message: "蓝牙发送成功"});
       },
@@ -110,17 +136,20 @@ Page({
   },
 
   onBLECharacteristicRead: function(characteristic) {
-    this.setData({message: '读取到蓝牙数据:' + JSON.stringify(characteristic)});
-    wx.offBLECharacteristicValueChange(onBLECharacteristicRead);
+    this.setData({message: '读取到蓝牙数据:' + JSON.stringify(ab2hex(characteristic.value))});
+    
+    //wx.offBLECharacteristicValueChange(onBLECharacteristicRead);
   },
 
   testReadBLE: function()
   {
     wx.onBLECharacteristicValueChange(this.onBLECharacteristicRead);
-    wx.readBLECharacteristicValue({
+    //wx.readBLECharacteristicValue({
+    wx.notifyBLECharacteristicValueChange({
       deviceId: this.data.deviceId,
       serviceId: this.data.serviceId,
-      characteristicId: null,
+      characteristicId: '0000FFE1-0000-1000-8000-00805F9B34FB',
+      state: true,
       success: (res) => {
         this.setData({message: "蓝牙读取成功"});
       },
