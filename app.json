@@ -3,11 +3,6 @@
     "pages/login/login",
     "pages/minePage/mine",
     "pages/homePage/home",
-    "pages/equipmentPage/equipment",
-    "pages/homePage/measure/measure",
-    "pages/minePage/mineDetail/mineDetail",
-    "pages/minePage/rename/rename",
-    "pages/minePage/addMachine/addMachine",
     "pages/trail/trail",
     "pages/ble/ble"
   ],
@@ -31,28 +26,18 @@
     "list": [
       {
         "pagePath": "pages/homePage/home",
-        "iconPath": "/images/icon5.png",
+        "iconPath": "/images/icon2.png",
         "selectedIconPath": "/images/icon1.png"
       },
       {
-        "pagePath": "pages/equipmentPage/equipment",
-        "iconPath": "/images/icon2.png",
+        "pagePath": "pages/ble/ble",
+        "iconPath": "/images/icon6.png",
         "selectedIconPath": "/images/icon6.png"
-      },
-      {
-        "pagePath": "pages/minePage/mine",
-        "iconPath": "/images/icon3.png",
-        "selectedIconPath": "/images/icon4.png"
       },
       {
         "pagePath": "pages/trail/trail",
         "iconPath": "/images/icon5.png",
         "selectedIconPath": "/images/icon1.png"
-      },
-      {
-        "pagePath": "pages/ble/ble",
-        "iconPath": "/images/icon2.png",
-        "selectedIconPath": "/images/icon6.png"
       }
     ]
   },

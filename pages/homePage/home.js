@@ -1,254 +1,217 @@
-var tool = require("../../tools/login.js") //引入登录函数
-import templates from '../../template/template.js'
-// pages/homePage/home.js
-Page({
-
-  //页面的初始数据
-  data: {
-    yue: true,
-    yue1: true,
-    yue2: true,
-    condition: false, //是否连接设备
-    isMacth: false, //设备是否配对
-    Attribute: [{
-        text: "服饰温度",
-        attribute: 30,
-      },
-      {
-        text: "衣外温度",
-        attribute: -5,
-      },
-      {
-        text: "当前功率",
-        attribute: "30W",
-      },
-      {
-        text: "剩余电量",
-        attribute: "36%",
-      }
-    ],
-    gearInformation: [{
-        disconnected: "/images/icon_low_down.png",
-        connected: "/images/icon_low_open.png",
-        text: "低"
-      },
-      {
-        disconnected: "/images/icon_medium_down.png",
-        connected: "/images/icon_medium_open.png",
-        text: "中"
-      },
-      {
-        disconnected: "/images/icon_high_down.png",
-        connected: "/images/icon_high_open.png",
-        text: "高"
-      },
-    ], //控温档位相关信息
-    isConnected: false, //是否连接
-    isOpen:true, //switch开关是否打开
-    whichGear:3, //选择哪个档位
-    menuButton: {
-      height: 0, //高度 px
-      width: 0, //宽度 px
-      top: 0, //离顶部的距离 px
-    }, //胶囊的信息
-    screen: {
-      height: 667, //高度 px
-      width: 375, //宽度 px
-    }, //屏幕信息
-  },
-
-  //生命周期函数--监听页面加载
-  onLoad: function (options) {
-    this.app = getApp();
-    // 获取胶囊按钮信息
-    let menuButtonObject = wx.getMenuButtonBoundingClientRect()
-    console.log(menuButtonObject)
-
-    // 获取设备信息
-    wx.getSystemInfo({
-      success: (res) => {
-        console.log(res)
-
-        //更新胶囊和屏幕信息
-        this.setData({
-          ["menuButton.height"]: menuButtonObject.height,
-          ["menuButton.width"]: menuButtonObject.width,
-          ["menuButton.top"]: menuButtonObject.top,
-          ["screen.height"]: res.screenHeight,
-          ["screen.width"]: res.screenWidth,
-        })
-
-      },
-    })
-
-  },
-
-  // 生命周期函数--监听页面初次渲染完成
-  onReady: function () {
-
-  },
-
-  //生命周期函数--监听页面显示
-  onShow: function () {
-    //文字渐出
-    // this.app.show(this, 'slide_up1',1,2000)
-    console.log(1111)
-    console.log("设备为：" + this.data.a)
-  },
-
-  // 生命周期函数--监听页面隐藏
-  onHide: function () {
-    //文字渐出
-    // this.app.show(this, 'slide_up1',0,1500)
-  },
-
-  //跳转到equipment页面
-  toEquipment: function () {
-    wx.redirectTo({
-      url: '/pages/equipmentPage/equipment'
-    })
-  },
-
-  //跳转到mine页面
-  toMine: function () {
-    wx.redirectTo({
-      url: '/pages/minePage/mine'
-    })
-  },
-
-  // 配对
-  Match: function () {
-    this.setData({
-      isMacth: true
-    })
-  },
-
-  //切换日月数据
-  change: function (e) {
-    this.setData({
-      yue: !this.data.yue
-    })
-  },
-  change1: function (e) {
-    this.setData({
-      yue1: !this.data.yue1
-    })
-  },
-  change2: function (e) {
-    this.setData({
-      yue2: !this.data.yue2
-    })
-  },
-
-  //改变连接状态
-  changeCondition: function () {
-    this.setData({
-      condition: !this.data.condition
-    })
-  },
-
-  //跳转到测量页面
-  to: function () {
-    wx.navigateTo({
-      url: '/pages/homePage/measure/measure'
-    })
-  },
-
-  //跳转至添加设备
-  addMachine() {
-    wx.navigateTo({
-      url: '/pages/minePage/addMachine/addMachine',
-    })
-  },
-  isOpen:function(e)
-  {
-    var that = this
-    that.setData({
-      isOpen:e.detail.value,
-      whichGear:3,
-    })
-    console.log(e.detail.value)
-  },
-  chooseGear: function (event) {
-    var that = this
-    console.log(event.currentTarget.dataset.index)
-    var whichGear = event.currentTarget.dataset.index
-    that.setData({
-      whichGear: event.currentTarget.dataset.index
-    })
-    if (that.data.isConnected) {
-      if (whichGear == 0) {
-        wx.writeBLECharacteristicValue({
-          deviceId: that.data._deviceId,
-          serviceId: that.data._deviceId,
-          characteristicId: that.data._characteristicId,
-          value: 0x4C54,
-          success: function () {
-            wx.showToast({
-              title: '已开启低档！',
-              icon: 'success',
-              duration: 1000,
-            })
-          },
-          fail: function () {
-            wx.showToast({
-              title: '开启失败！',
-              icon: 'error',
-              duration: 1000,
-            })
-          }
-        })
-      } else if (whichGear == 1) {
-        wx.writeBLECharacteristicValue({
-          deviceId: that.data._deviceId,
-          serviceId: that.data._deviceId,
-          characteristicId: that.data._characteristicId,
-          value: 0x4D54,
-          success: function () {
-            wx.showToast({
-              title: '已开启中档！',
-              icon: 'success',
-              duration: 1000,
-            })
-          },
-          fail: function () {
-            wx.showToast({
-              title: '开启失败！',
-              icon: 'error',
-              duration: 1000,
-            })
-          }
-        })
-      } else if (whichGear == 2) {
-        wx.writeBLECharacteristicValue({
-          deviceId: that.data._deviceId,
-          serviceId: that.data._deviceId,
-          characteristicId: that.data._characteristicId,
-          value: 0x4854,
-          success: function () {
-            wx.showToast({
-              title: '已开启高档！',
-              icon: 'success',
-              duration: 1000,
-            })
-          },
-          fail: function () {
-            wx.showToast({
-              title: '开启失败！',
-              icon: 'error',
-              duration: 1000,
-            })
-          }
-        })
-      }
-    }
-    else{
-      wx.showToast({
-        title: '设备未连接！',
-        icon: 'error',
-        duration: 1000,
-      })
+// pages/ble/ble.js
+function inArray(arr, key, val) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][key] === val) {
+      return i;
     }
   }
+  return -1;
+}
 
+// ArrayBuffer转16进度字符串示例
+function ab2hex(buffer) {
+  var hexArr = Array.prototype.map.call(
+    new Uint8Array(buffer),
+    function (bit) {
+      return ('00' + bit.toString(16)).slice(-2)
+    }
+  )
+  return hexArr.join('');
+}
+
+
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    message: 'BLE测试',
+    // **********这里指定ID************
+    deviceId: 'CF05C15E-2CB9-B19B-6BE2-34EBF1D5B554',
+    serviceId: '0000FFE0-0000-1000-8000-00805F9B34FB',
+    myvalue: new ArrayBuffer(4),
+  },
+
+  openBLE: function() {
+    wx.openBluetoothAdapter({
+      success: (res) => {
+        this.setData({message: '初始化蓝牙适配器成功' + JSON.stringify(res)});
+      },   
+      fail: (res) => {
+        this.setData({message: '初始化蓝牙适配器失败， 失败原因： ' + JSON.stringify(res)});
+      }
+    });
+  },
+
+  findDevice: function() {
+    wx.startBluetoothDevicesDiscovery({
+      success: (res) => {
+        this.setData({message: '成功打开，开始搜寻附近的蓝牙外围设备 ...' + JSON.stringify(res)});
+        wx.getBluetoothDevices({
+          success: (res) => {
+            this.setData({message: '发现外围蓝牙设备， 设备信息 =' + JSON.stringify(res)});
+          },   
+          fail: (res) => {
+            this.setData({message: '发送外围蓝牙设备失败， 失败原因 =' + JSON.stringify(res)});
+          }
+        });
+      },   
+      fail: (res) => {
+        this.setData({message: '扫描失败蓝牙设备 ...' + JSON.stringify(res)});
+      }
+    });
+  },
+
+  connectDevice: function() {
+    let deviceId = this.data.deviceId;
+    let serviceUUID = this.data.serviceId;
+    
+    wx.createBLEConnection({
+      deviceId: deviceId,
+      success: (res) => {
+        this.setData({message: '蓝牙设备连接成功\n'});
+        wx.getBLEDeviceServices({
+          deviceId: deviceId,
+          success: (res) => {
+            this.setData({message: this.data.message + '获取蓝牙设备Service信息 = ' + JSON.stringify(res)});
+            //wx.stopBluetoothDevicesDiscovery();              
+            wx.getBLEDeviceCharacteristics({
+              deviceId: deviceId,
+              serviceId: serviceUUID,
+              success: (res) => {
+                this.setData({message: this.data.message + '蓝牙设备特征值信息读取成功'});
+                for (var ik = 0; ik < res.characteristics.length; ik++) {
+                  var characteristicsUUID = res.characteristics[ik].uuid;
+                  this.setData({message: this.data.message + 'res.characteristics[' + ik + '] uuid = ' + characteristicsUUID});
+                  this.setData({message: this.data.message + 'res.characteristics[' + ik + '] properties = ' + JSON.stringify(res.characteristics[ik].properties)});
+                }
+              },
+              fail: (res) => {
+                this.setData({message: this.data.message + '获取设备特征值失败, 失败原因 =' + JSON.stringify(res)});
+              },
+            });
+          },
+          fail: (res) => {
+            this.setData({message: this.data.message + '获取设备服务失败，失败原因 = ' + JSON.stringify(res)});
+          }
+        });
+      },
+      fail: (res) => {
+        this.setData({message: '蓝牙设备连接失败，请稍后重试，失败原因 = ' + JSON.stringify(res)});
+      }
+    });
+  },
+
+  disconnectDevice: function() {
+    wx.closeBLEConnection({
+      deviceId: this.data.deviceId,
+      success: (res) => {
+        this.setData({message: '断开蓝牙设备成功：' + JSON.stringify(res)});
+      },   
+      fail: (res) => {
+        this.setData({message: '断开蓝牙设备失败：' + JSON.stringify(res)});
+      }
+    });
+  },
+
+  testWriteBLE: function()
+  {
+    let buffer = new ArrayBuffer(2);
+    let dataView = new DataView(buffer);
+    dataView.setUint8(0,48);
+    dataView.setUint8(1,49);
+    wx.writeBLECharacteristicValue({
+      deviceId: this.data.deviceId,
+      serviceId: this.data.serviceId,
+      characteristicId: '0000FFE1-0000-1000-8000-00805F9B34FB',
+      value: buffer,
+      success: (res) => {
+        this.setData({message: "蓝牙发送成功"});
+      },
+      fail: (res) => {
+        this.setData({message: "蓝牙发送失败，失败原因： " + JSON.stringify(res)});
+      },
+    }); 
+  },
+
+  onBLECharacteristicRead: function(characteristic) {
+    this.setData({message: '读取到蓝牙数据:' + JSON.stringify(ab2hex(characteristic.value))});
+    
+    //wx.offBLECharacteristicValueChange(onBLECharacteristicRead);
+  },
+
+  testReadBLE: function()
+  {
+    wx.onBLECharacteristicValueChange(this.onBLECharacteristicRead);
+    //wx.readBLECharacteristicValue({
+    wx.notifyBLECharacteristicValueChange({
+      deviceId: this.data.deviceId,
+      serviceId: this.data.serviceId,
+      characteristicId: '0000FFE1-0000-1000-8000-00805F9B34FB',
+      state: true,
+      success: (res) => {
+        this.setData({message: "蓝牙读取成功"});
+      },
+      fail: (res) => {
+        this.setData({message: "蓝牙读取失败，失败原因： " + JSON.stringify(res)});
+      },
+    }); 
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
+  }
 })
