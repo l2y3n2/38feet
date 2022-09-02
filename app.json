@@ -1,10 +1,9 @@
 {
   "pages": [
     "pages/login/login",
-    "pages/minePage/mine",
+    "pages/equipmentPage/equipment",
     "pages/homePage/home",
-    "pages/trail/trail",
-    "pages/ble/ble"
+    "pages/trailPage/trail"
   ],
   "permission": {
     "scope.userLocation": {
@@ -26,16 +25,16 @@
     "list": [
       {
         "pagePath": "pages/homePage/home",
-        "iconPath": "/images/icon2.png",
-        "selectedIconPath": "/images/icon1.png"
+        "iconPath": "/images/icon3.png",
+        "selectedIconPath": "/images/icon4.png"
       },
       {
-        "pagePath": "pages/ble/ble",
-        "iconPath": "/images/icon6.png",
+        "pagePath": "pages/equipmentPage/equipment",
+        "iconPath": "/images/icon2.png",
         "selectedIconPath": "/images/icon6.png"
       },
       {
-        "pagePath": "pages/trail/trail",
+        "pagePath": "pages/trailPage/trail",
         "iconPath": "/images/icon5.png",
         "selectedIconPath": "/images/icon1.png"
       }

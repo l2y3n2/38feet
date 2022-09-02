@@ -1,12 +1,16 @@
 <!--pages/ble/ble.wxml-->
 <view class="page-body">
   <view class="page-section page-section-gap">
-    <button bindtap="openBLE" class="flex-item page-body-button" type="primary">打开蓝牙</button>
-    <button bindtap="findDevice" class="flex-item page-body-button" type="primary">查找设备（多找几次）</button>
-    <button bindtap="connectDevice" class="flex-item page-body-button" type="primary">连接设备（代码里指定ID）</button>
-    <button bindtap="testWriteBLE" class="flex-item page-body-button" type="primary">写值测试（代码指定ID与值）</button>
-    <button bindtap="testReadBLE" class="flex-item page-body-button" type="primary">读值测试（代码指定ID）</button>
-    <button bindtap="disconnectDevice" class="flex-item page-body-button" type="primary">断开设备</button>
-    <text class="flex-item">{{message}}</text>
+    <button bindtap="oneStepConnect" class="flex-item page-body-button" type="primary">连接设备</button>
+    <button bindtap="readTemp" class="flex-item page-body-button" type="primary">读取当前温度</button>
+    <button bindtap="writeTemp" class="flex-item page-body-button" type="primary">设置目标温度</button>
+    <view class="flex-row" style="display:flex;">
+      <text class="flex-item">设置温度（℃）：</text>
+      <input class="flex-item" bindinput="changeTargetTemp" placeholder="{{targetTemp}}"/>
+    </view>
+    <view class="flex-row" style="display:flex;">
+      <text class="flex-item">当前温度（℃）：{{currentTemp}}</text>
+    </view>
+    <text class="flex-item">当前状态：{{message}}</text>
   </view>
 </view>

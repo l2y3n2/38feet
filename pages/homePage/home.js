@@ -30,7 +30,9 @@ Page({
     // **********这里指定ID************
     deviceId: 'CF05C15E-2CB9-B19B-6BE2-34EBF1D5B554',
     serviceId: '0000FFE0-0000-1000-8000-00805F9B34FB',
-    myvalue: new ArrayBuffer(4),
+    currentTemp: 0,
+    targetTemp: 37,
+    myvalue: new ArrayBuffer(4)
   },
 
   openBLE: function() {
@@ -40,25 +42,6 @@ Page({
       },   
       fail: (res) => {
         this.setData({message: '初始化蓝牙适配器失败， 失败原因： ' + JSON.stringify(res)});
-      }
-    });
-  },
-
-  findDevice: function() {
-    wx.startBluetoothDevicesDiscovery({
-      success: (res) => {
-        this.setData({message: '成功打开，开始搜寻附近的蓝牙外围设备 ...' + JSON.stringify(res)});
-        wx.getBluetoothDevices({
-          success: (res) => {
-            this.setData({message: '发现外围蓝牙设备， 设备信息 =' + JSON.stringify(res)});
-          },   
-          fail: (res) => {
-            this.setData({message: '发送外围蓝牙设备失败， 失败原因 =' + JSON.stringify(res)});
-          }
-        });
-      },   
-      fail: (res) => {
-        this.setData({message: '扫描失败蓝牙设备 ...' + JSON.stringify(res)});
       }
     });
   },
@@ -103,6 +86,15 @@ Page({
     });
   },
 
+  oneStepConnect: function() {
+    this.openBLE();
+    this.connectDevice();
+  },
+
+  changeTargetTemp: function (e) {
+    this.setData({minDistance: e.detail.value});
+  },
+  
   disconnectDevice: function() {
     wx.closeBLEConnection({
       deviceId: this.data.deviceId,
@@ -115,33 +107,35 @@ Page({
     });
   },
 
-  testWriteBLE: function()
+  writeTemp: function()
   {
     let buffer = new ArrayBuffer(2);
     let dataView = new DataView(buffer);
     dataView.setUint8(0,48);
-    dataView.setUint8(1,49);
+    // 目标温度
+    dataView.setUint8(1,this.data.targetTemp);
     wx.writeBLECharacteristicValue({
       deviceId: this.data.deviceId,
       serviceId: this.data.serviceId,
       characteristicId: '0000FFE1-0000-1000-8000-00805F9B34FB',
       value: buffer,
       success: (res) => {
-        this.setData({message: "蓝牙发送成功"});
+        this.setData({message: "蓝牙设置温度成功"});
       },
       fail: (res) => {
-        this.setData({message: "蓝牙发送失败，失败原因： " + JSON.stringify(res)});
+        this.setData({message: "蓝牙设置温度失败，失败原因： " + JSON.stringify(res)});
       },
     }); 
   },
 
   onBLECharacteristicRead: function(characteristic) {
     this.setData({message: '读取到蓝牙数据:' + JSON.stringify(ab2hex(characteristic.value))});
-    
+    // 根据格式设置
+    this.setData({currentTemp: 0});
     //wx.offBLECharacteristicValueChange(onBLECharacteristicRead);
   },
 
-  testReadBLE: function()
+  readTemp: function()
   {
     wx.onBLECharacteristicValueChange(this.onBLECharacteristicRead);
     //wx.readBLECharacteristicValue({
@@ -151,10 +145,10 @@ Page({
       characteristicId: '0000FFE1-0000-1000-8000-00805F9B34FB',
       state: true,
       success: (res) => {
-        this.setData({message: "蓝牙读取成功"});
+        this.setData({message: "蓝牙读取温度成功"});
       },
       fail: (res) => {
-        this.setData({message: "蓝牙读取失败，失败原因： " + JSON.stringify(res)});
+        this.setData({message: "蓝牙读取温度失败，失败原因： " + JSON.stringify(res)});
       },
     }); 
   },
