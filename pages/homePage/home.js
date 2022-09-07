@@ -31,8 +31,7 @@ Page({
     deviceId: 'CF05C15E-2CB9-B19B-6BE2-34EBF1D5B554',
     serviceId: '0000FFE0-0000-1000-8000-00805F9B34FB',
     currentTemp: 0,
-    targetTemp: 37,
-    myvalue: new ArrayBuffer(4)
+    targetTemp: 37
   },
 
   openBLE: function() {
@@ -109,11 +108,10 @@ Page({
 
   writeTemp: function()
   {
-    let buffer = new ArrayBuffer(2);
+    let buffer = new ArrayBuffer(3);
     let dataView = new DataView(buffer);
-    dataView.setUint8(0,48);
-    // 目标温度
-    dataView.setUint8(1,this.data.targetTemp);
+    dataView.setUint8(0, 0x01);
+    dataView.setUint16(1, this.data.targetTemp * 10);
     wx.writeBLECharacteristicValue({
       deviceId: this.data.deviceId,
       serviceId: this.data.serviceId,
@@ -128,15 +126,36 @@ Page({
     }); 
   },
 
+  GetTemp: function()
+  {
+    let buffer1 = new ArrayBuffer(1);
+    let dataView1 = new DataView(buffer1);
+    dataView1.setUint8(0, 0x10);
+    wx.writeBLECharacteristicValue({
+      deviceId: this.data.deviceId,
+      serviceId: this.data.serviceId,
+      characteristicId: '0000FFE1-0000-1000-8000-00805F9B34FB',
+      value: buffer1,
+      success: (res) => {
+        this.setData({message: "发送获取温度命令成功"});
+      },
+      fail: (res) => {
+        this.setData({message: "发送获取温度命令失败，失败原因： " + JSON.stringify(res)});
+      },
+    }); 
+  },
+
   onBLECharacteristicRead: function(characteristic) {
     this.setData({message: '读取到蓝牙数据:' + JSON.stringify(ab2hex(characteristic.value))});
-    // 根据格式设置
-    this.setData({currentTemp: 0});
+    let dataView = new DataView(characteristic.value);
+    // 温度是写在这个位置么？
+    this.setData({currentTemp: dataView.getUint16(1) / 10});
     //wx.offBLECharacteristicValueChange(onBLECharacteristicRead);
   },
 
   readTemp: function()
   {
+    this.GetTemp();
     wx.onBLECharacteristicValueChange(this.onBLECharacteristicRead);
     //wx.readBLECharacteristicValue({
     wx.notifyBLECharacteristicValueChange({
