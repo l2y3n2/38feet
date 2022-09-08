@@ -30,68 +30,32 @@ Page({
     // **********这里指定ID************
     deviceId: 'CF05C15E-2CB9-B19B-6BE2-34EBF1D5B554',
     serviceId: '0000FFE0-0000-1000-8000-00805F9B34FB',
+    connected: false,
+    batteryAt30Degree: 10,
+    batteryRemainHours: 10,
     currentTemp: 0,
     targetTemp: 37
   },
 
-  openBLE: function() {
+  oneStepConnect: function() {
     wx.openBluetoothAdapter({
       success: (res) => {
         this.setData({message: '初始化蓝牙适配器成功' + JSON.stringify(res)});
+        wx.createBLEConnection({
+          deviceId: this.data.deviceId,
+          success: (res) => {
+            this.setData({message: '蓝牙设备连接成功\n'});
+            this.setData({connected: true});
+          },
+          fail: (res) => {
+            this.setData({message: '蓝牙设备连接失败，请稍后重试，失败原因 = ' + JSON.stringify(res)});
+          }
+        });
       },   
       fail: (res) => {
         this.setData({message: '初始化蓝牙适配器失败， 失败原因： ' + JSON.stringify(res)});
       }
     });
-  },
-
-  connectDevice: function() {
-    let deviceId = this.data.deviceId;
-    let serviceUUID = this.data.serviceId;
-    
-    wx.createBLEConnection({
-      deviceId: deviceId,
-      success: (res) => {
-        this.setData({message: '蓝牙设备连接成功\n'});
-        wx.getBLEDeviceServices({
-          deviceId: deviceId,
-          success: (res) => {
-            this.setData({message: this.data.message + '获取蓝牙设备Service信息 = ' + JSON.stringify(res)});
-            //wx.stopBluetoothDevicesDiscovery();              
-            wx.getBLEDeviceCharacteristics({
-              deviceId: deviceId,
-              serviceId: serviceUUID,
-              success: (res) => {
-                this.setData({message: this.data.message + '蓝牙设备特征值信息读取成功'});
-                for (var ik = 0; ik < res.characteristics.length; ik++) {
-                  var characteristicsUUID = res.characteristics[ik].uuid;
-                  this.setData({message: this.data.message + 'res.characteristics[' + ik + '] uuid = ' + characteristicsUUID});
-                  this.setData({message: this.data.message + 'res.characteristics[' + ik + '] properties = ' + JSON.stringify(res.characteristics[ik].properties)});
-                }
-              },
-              fail: (res) => {
-                this.setData({message: this.data.message + '获取设备特征值失败, 失败原因 =' + JSON.stringify(res)});
-              },
-            });
-          },
-          fail: (res) => {
-            this.setData({message: this.data.message + '获取设备服务失败，失败原因 = ' + JSON.stringify(res)});
-          }
-        });
-      },
-      fail: (res) => {
-        this.setData({message: '蓝牙设备连接失败，请稍后重试，失败原因 = ' + JSON.stringify(res)});
-      }
-    });
-  },
-
-  oneStepConnect: function() {
-    this.openBLE();
-    this.connectDevice();
-  },
-
-  changeTargetTemp: function (e) {
-    this.setData({minDistance: e.detail.value});
   },
   
   disconnectDevice: function() {
@@ -106,7 +70,11 @@ Page({
     });
   },
 
-  writeTemp: function()
+  setTargetTemp: function(e) {
+    this.data.targetTemp = e.detail.value;
+  },
+
+  writeTemp: function() 
   {
     let buffer = new ArrayBuffer(3);
     let dataView = new DataView(buffer);
@@ -123,7 +91,26 @@ Page({
       fail: (res) => {
         this.setData({message: "蓝牙设置温度失败，失败原因： " + JSON.stringify(res)});
       },
-    }); 
+    });
+    this.setData({batteryRemainHours: (this.data.batteryAt30Degree / (1 + (this.data.targetTemp - 30) / 30)).toFixed(2)});
+  },
+
+  writeTempHigh: function()
+  {
+    this.setData({targetTemp: 40});
+    this.writeTemp();
+  },
+
+  writeTempMed: function()
+  {
+    this.setData({targetTemp: 35});
+    this.writeTemp();
+  },
+
+  writeTempLow: function()
+  {
+    this.setData({targetTemp: 30});
+    this.writeTemp();
   },
 
   GetTemp: function()
@@ -146,11 +133,8 @@ Page({
   },
 
   onBLECharacteristicRead: function(characteristic) {
-    this.setData({message: '读取到蓝牙数据:' + JSON.stringify(ab2hex(characteristic.value))});
     let dataView = new DataView(characteristic.value);
-    // 温度是写在这个位置么？
-    this.setData({currentTemp: dataView.getUint16(1) / 10});
-    //wx.offBLECharacteristicValueChange(onBLECharacteristicRead);
+    this.setData({currentTemp: dataView.getUint16(0) / 10});
   },
 
   readTemp: function()

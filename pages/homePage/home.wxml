@@ -1,15 +1,21 @@
 <!--pages/ble/ble.wxml-->
 <view class="page-body">
   <view class="page-section page-section-gap">
-    <button bindtap="oneStepConnect" class="flex-item page-body-button" type="primary">连接设备</button>
+    <button bindtap="oneStepConnect" class="flex-item page-body-button" disabled="{{connected}}" type="primary">连接设备</button>
     <button bindtap="readTemp" class="flex-item page-body-button" type="primary">读取当前温度</button>
-    <button bindtap="writeTemp" class="flex-item page-body-button" type="primary">设置目标温度</button>
+    <button bindtap="writeTempHigh" class="flex-item page-body-button" type="primary">设置高温</button>
+    <button bindtap="writeTempMed" class="flex-item page-body-button" type="primary">设置中温</button>
+    <button bindtap="writeTempLow" class="flex-item page-body-button" type="primary">设置低温</button>
+    <button bindtap="writeTemp" class="flex-item page-body-button" type="primary">设置任意温度</button>
     <view class="flex-row" style="display:flex;">
       <text class="flex-item">设置温度（℃）：</text>
-      <input class="flex-item" bindinput="changeTargetTemp" placeholder="{{targetTemp}}"/>
+      <input class="flex-item" bindinput="setTargetTemp" value="{{targetTemp}}"/>
     </view>
     <view class="flex-row" style="display:flex;">
       <text class="flex-item">当前温度（℃）：{{currentTemp}}</text>
+    </view>
+    <view class="flex-row" style="display:flex;">
+      <text class="flex-item">剩余电量：{{batteryRemainHours}}小时</text>
     </view>
     <text class="flex-item">当前状态：{{message}}</text>
   </view>
